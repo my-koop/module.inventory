@@ -1,15 +1,12 @@
 {
   "version": "v4",
-  "repo": "borisyankov/DefinitelyTyped",
+  "repo": "my-koop/type.definitions",
   "ref": "master",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "express/express.d.ts": {
-      "commit": "aeedcbf5e5bea7586729df8dfb12279f26005b7c"
-    },
-    "node/node.d.ts": {
-      "commit": "aeedcbf5e5bea7586729df8dfb12279f26005b7c"
+    "mykoop/mykoop.d.ts": {
+      "commit": "cae8670458ef667b95b15550e11bfac90d9b86ef"
     }
   }
 }
