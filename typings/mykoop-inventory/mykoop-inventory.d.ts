@@ -8,10 +8,9 @@
 declare module "mykoop-inventory" {
   import mykoop = require("mykoop");
 
-  class Module implements mykoop.IModule{
+  export class Module implements mykoop.IModule{
     get(): string;
   }
 
-  export = Module;
 }
 
