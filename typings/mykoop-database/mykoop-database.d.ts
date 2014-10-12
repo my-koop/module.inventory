@@ -3,11 +3,15 @@
 // Definitions by: Michael Ferris <https://github.com/Cellule/>
 // Definitions: https://github.com/my-koop/type.definitions
 
-/// <reference path="../mysql/mysql.d.ts" />
 /// <reference path="../mykoop/mykoop.d.ts" />
 
+declare module mysql {
+  export interface IConnection{}
+  export interface IConnectionConfig{}
+}
+
 declare module "mykoop-database" {
-  import mysql = require("mysql");
+  //import mysql = require("mysql");
   import mykoop = require("mykoop");
 
   interface Module extends mykoop.IModule {
