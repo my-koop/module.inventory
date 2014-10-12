@@ -1,5 +1,5 @@
 {
-  "name": "my-koop.inventory",
+  "name": "mykoop-inventory",
   "version": "0.0.1",
   "description": "Inventory module for My Koop responsible for item's definitions and management",
   "main": "index.js",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/my-koop/module.inventory",
   "peerDependencies": {
-    "express": "^4.9.6"
+    "express": "^4.9.6",
+    "mykoop-database": "my-koop/module.database"
   }
 }

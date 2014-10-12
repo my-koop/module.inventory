@@ -7,6 +7,9 @@
   "installed": {
     "mykoop/mykoop.d.ts": {
       "commit": "2b92f62fffcf9f07feaa2bc430989f897b347132"
+    },
+    "mykoop-database/mykoop-database.d.ts": {
+      "commit": "2f3689383a836968f8ace469321b8183d261497c"
     }
   }
 }
