@@ -15,9 +15,5 @@
   "bugs": {
     "url": "https://github.com/my-koop/module.inventory/issues"
   },
-  "homepage": "https://github.com/my-koop/module.inventory",
-  "peerDependencies": {
-    "express": "^4.9.6",
-    "mykoop-database": "my-koop/module.database"
-  }
+  "homepage": "https://github.com/my-koop/module.inventory"
 }
