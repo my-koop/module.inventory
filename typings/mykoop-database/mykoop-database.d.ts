@@ -10,11 +10,8 @@ declare module mysql {
   export interface IConnectionConfig{}
 }
 
-declare module mykoop {
-  export interface IModule{}
-}
-
-declare module mkdatabase {
+declare module "mykoop-database" {
+  import mykoop = require("mykoop");
 
   export interface ConnectionCallback{
     (err: any, connection: mysql.IConnection) : void;
