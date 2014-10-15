@@ -5,8 +5,11 @@
 
 /// <reference path="../mykoop/mykoop.d.ts" />
 
-declare module "mykoop-inventory" {
-  import mykoop = require("mykoop");
+declare module mykoop {
+  export interface IModule {}
+}
+
+declare module mkinventory {
 
   export class Module implements mykoop.IModule{
     get(): string;

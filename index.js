@@ -3,12 +3,20 @@ var InventoryModule = (function () {
     }
     InventoryModule.prototype.init = function (moduleManager) {
         this.moduleManager = moduleManager;
-        var app = this.moduleManager.get("WebServer");
+        var routerModule = this.moduleManager.get("router");
+        routerModule.addRoutes(function (router) {
+            router.get("/items", function (req, res, next) {
+                console.log("successfully routed to /inventory/items");
+                res.end();
+                next();
+            });
+            return "/inventory";
+        });
+
         var db = this.moduleManager.get("database");
         if (db) {
             this.db = db;
         }
-        //app.get("/items",)
     };
 
     InventoryModule.prototype.get = function () {

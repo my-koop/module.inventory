@@ -1,21 +1,26 @@
 /// <reference path="typings/tsd.d.ts" />
 import express = require("express");
-import mykoop = require("mykoop");
-import mkinventory = require("mykoop-inventory");
-import mkdatabase = require("mykoop-database");
 
-class InventoryModule implements mkinventory {
+class InventoryModule implements mkinventory.Module {
   moduleManager: mykoop.ModuleManager;
-  db: mkdatabase;
+  db: mkdatabase.Module;
 
   init(moduleManager: mykoop.ModuleManager){
     this.moduleManager = moduleManager;
-    var app = <express.Express>this.moduleManager.get("WebServer");
-    var db = <mkdatabase>this.moduleManager.get("database");
+    var routerModule = <any>this.moduleManager.get("router");
+    routerModule.addRoutes(function(router: express.Router){
+      router.get("/items", function(req,res,next){
+        console.log("successfully routed to /inventory/items");
+        res.end();
+        next();
+      });
+      return "/inventory";
+    });
+
+    var db = <mkdatabase.Module>this.moduleManager.get("database");
     if(db){
       this.db = db;
     }
-    //app.get("/items",)
   }
 
   get(): string {
