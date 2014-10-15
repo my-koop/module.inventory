@@ -22,7 +22,6 @@ class InventoryModule implements mkinventory.Module {
   get(): string {
     return "trollolol";
   }
-
 }
 
 export = InventoryModule;
