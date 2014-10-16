@@ -4,12 +4,12 @@ var InventoryModule = (function () {
     }
     InventoryModule.prototype.init = function (moduleManager) {
         this.moduleManager = moduleManager;
+        var db = this.moduleManager.get("database");
         var routerModule = this.moduleManager.get("router");
         routerModule.addRoutes(function (router) {
-            router.get("/items", itemsData);
+            router.get("/items", itemsData.bind(null, db));
             return "/inventory";
         });
-        var db = this.moduleManager.get("database");
         if (db) {
             this.db = db;
         }

@@ -1,5 +1,7 @@
 import express = require("express");
 import itemsData = require ("../lib/itemsData");
+import mysql = require('mysql');
+import Item = require("../classes/Item");
 
 class InventoryModule implements mkinventory.Module {
   moduleManager: mykoop.ModuleManager;
@@ -7,13 +9,13 @@ class InventoryModule implements mkinventory.Module {
 
   init(moduleManager: mykoop.ModuleManager){
     this.moduleManager = moduleManager;
+    var db = <mkdatabase.Module>this.moduleManager.get("database");
     var routerModule = <any>this.moduleManager.get("router");
     routerModule.addRoutes(function(router: express.Router){
-      router.get("/items",itemsData);
+      router.get("/items",itemsData.bind(null,db));
       return "/inventory";
     });
 
-    var db = <mkdatabase.Module>this.moduleManager.get("database");
     if(db){
       this.db = db;
     }
