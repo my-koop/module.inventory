@@ -15,6 +15,20 @@ class ModuleBridge implements mykoop.IModuleBridge {
   getModule() : mykoop.IModule {
     return this.instance;
   }
+
+  getMetaData(): mykoop.IModuleMetaData {
+    return {
+      admin:{
+        children:{
+          inventory:{
+            handler: "InventoryPage",
+            name: "inventory",
+            path: "/inventory"
+          }
+        }
+      }
+    }
+  }
 }
 
 export = ModuleBridge;
