@@ -1,4 +1,4 @@
-var react = require("react/addons");
+var React = require("react/addons");
 var style = require("grayBg.useable.less");
 
 var ItemList = React.createClass({

@@ -7,4 +7,5 @@ var Item = (function () {
     }
     return Item;
 })();
+
 module.exports = Item;

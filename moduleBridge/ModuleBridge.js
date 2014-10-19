@@ -1,4 +1,5 @@
 var InventoryModule = require("./InventoryModule");
+
 var ModuleBridge = (function () {
     function ModuleBridge() {
         this.instance = new InventoryModule();
@@ -7,9 +8,34 @@ var ModuleBridge = (function () {
         console.log("Hey hey im the inventory and im ready to rumble");
         this.instance.init(moduleManager);
     };
+
     ModuleBridge.prototype.getModule = function () {
         return this.instance;
     };
+
+    ModuleBridge.prototype.getMetaData = function (callback) {
+        callback(null, {
+            routes: {
+                public: {
+                    children: {
+                        inventory: {
+                            children: {
+                                itemList: {
+                                    handler: {
+                                        resolve: "component",
+                                        value: "ItemList"
+                                    },
+                                    name: "items",
+                                    path: "/inventory/itemlist"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    };
     return ModuleBridge;
 })();
+
 module.exports = ModuleBridge;
