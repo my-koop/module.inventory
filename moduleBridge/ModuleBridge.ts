@@ -35,6 +35,16 @@ class ModuleBridge implements mykoop.IModuleBridge {
             }
           }
         }
+      },
+      translations: {
+        en: {
+          general: {
+            testString2: "u mad brah?"
+          },
+          inventory: {
+            itemList: "Item List mofo"
+          }
+        }
       }
     });
   }
