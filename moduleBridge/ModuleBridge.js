@@ -35,9 +35,7 @@ var ModuleBridge = (function () {
             },
             translations: {
                 en: {
-                    general: {
-                        testString2: "u mad brah?"
-                    },
+                    general: require("../locales").en.general,
                     inventory: {
                         itemList: "Item List mofo"
                     }
