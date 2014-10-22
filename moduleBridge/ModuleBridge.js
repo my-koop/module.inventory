@@ -33,14 +33,7 @@ var ModuleBridge = (function () {
                     }
                 }
             },
-            translations: {
-                en: {
-                    general: require("../locales").en.general,
-                    inventory: {
-                        itemList: "Item List mofo"
-                    }
-                }
-            }
+            translations: require("../locales")
         });
     };
     return ModuleBridge;

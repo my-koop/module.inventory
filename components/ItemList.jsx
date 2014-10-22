@@ -12,7 +12,7 @@ var ItemList = React.createClass({
   },
 
   render: function() {
-		return <span>TEST3!!! <strong>{__("testString")}</strong> - <strong>{__("testString2")}</strong> - <strong>{__("inventory::itemList")}</strong></span>;
+		return <strong>{__("tmpString")}</strong>;
 	}
 });
 

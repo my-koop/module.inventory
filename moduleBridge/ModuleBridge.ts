@@ -36,14 +36,7 @@ class ModuleBridge implements mykoop.IModuleBridge {
           }
         }
       },
-      translations: {
-        en: {
-          general: require("../locales").en.general,
-          inventory: {
-            itemList: "Item List mofo"
-          }
-        }
-      }
+      translations: require("../locales")
     });
   }
 }
