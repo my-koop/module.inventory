@@ -1,3 +1,4 @@
+import path = require("path");
 import express = require("express");
 import itemsData = require ("../lib/itemsData");
 import mysql = require('mysql');
@@ -13,6 +14,10 @@ class InventoryModule implements mkinventory.Module {
     var routerModule = <any>this.moduleManager.get("router");
     routerModule.addRoutes(function(router: express.Router){
       router.get("/items",itemsData.bind(null,db));
+      router.get("/itemlist", function (req, res) {
+        //FIXME: I imagine router will expose a clean way to do this...
+        res.sendFile(path.join(__dirname, "../../service.website/public/index.html"));
+      });
       return "/inventory";
     });
 

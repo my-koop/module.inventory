@@ -1,5 +1,6 @@
-var react = require("react/addons");
+var React = require("react/addons");
 var style = require("grayBg.useable.less");
+var __ = require("language").__;
 
 var ItemList = React.createClass({
 	componentDidMount: function(){
@@ -11,7 +12,7 @@ var ItemList = React.createClass({
   },
 
   render: function() {
-		return <span>TEST3!!!</span>;
+		return <strong>{__("tmpString")}</strong>;
 	}
 });
 

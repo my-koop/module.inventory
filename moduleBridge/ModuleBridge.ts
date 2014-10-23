@@ -15,6 +15,30 @@ class ModuleBridge implements mykoop.IModuleBridge {
   getModule() : mykoop.IModule {
     return this.instance;
   }
+
+  getMetaData(callback: mykoop.ModuleMetaDataCallback): void {
+    callback(null, {
+      routes: {
+        public:{
+          children: {
+            inventory: {
+              children: {
+                itemList: {
+                  handler: {
+                    resolve: "component",
+                    value: "ItemList"
+                  },
+                  name: "items",
+                  path: "/inventory/itemlist"
+                }
+              }
+            }
+          }
+        }
+      },
+      translations: require("../locales")
+    });
+  }
 }
 
 export = ModuleBridge;
