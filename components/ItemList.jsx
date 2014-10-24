@@ -1,6 +1,7 @@
 var React = require("react/addons");
 var style = require("grayBg.useable.less");
 var __ = require("language").__;
+var MKItems = require("./Items");
 
 var ItemList = React.createClass({
 	componentDidMount: function(){
@@ -12,7 +13,12 @@ var ItemList = React.createClass({
   },
 
   render: function() {
-		return <strong>{__("tmpString")}</strong>;
+		return (
+      <div>
+        <MKItems /> 
+        <strong>{__("tmpString")}</strong>
+      </div>
+    ); 
 	}
 });
 
