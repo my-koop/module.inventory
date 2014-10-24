@@ -16,7 +16,6 @@ var ItemList = React.createClass({
 		return (
       <div>
         <MKItems /> 
-        <strong>{__("tmpString")}</strong>
       </div>
     ); 
 	}

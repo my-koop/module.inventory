@@ -3,11 +3,10 @@ var BSCol             = require("react-bootstrap/Col");
 var BSButton          = require("react-bootstrap/Button");
 var BSModalTrigger    = require("react-bootstrap/ModalTrigger");
 var MKIcon            = require("components/Icon");
-  
 var MKTableSorter     = require("components/TableSorter");
 var MKListModButtons  = require("components/ListModButtons");
 var MKItemEditModal   = require("components/ItemEditModal");
-  
+var __                = require("language").__;
 var ajax              = require("ajax");
 
 var Items = React.createClass({
@@ -22,7 +21,7 @@ var Items = React.createClass({
     var self = this;
 
     var itemsData = ajax.request(
-      {endpoint: "/inventory/itemsdata"},
+      {endpoint: "/inventory/requests/items"},
       function(err, res){
         if (err) {
           console.error(status, err.toString());
@@ -39,7 +38,7 @@ var Items = React.createClass({
       {
         content: ( <MKIcon glyph="star" library="glyphicon" /> ),
         tooltip: {
-          text: "Save as favorite!",
+          text: __("saveAsFavorite"),
           overlayProps: {
             placement: "left"
           }
