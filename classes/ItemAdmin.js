@@ -8,6 +8,7 @@ var ItemAdmin = (function () {
         this.code = row["code"];
     }
     ItemAdmin.COLUMNS_ADMIN = ["id", "name", "quantityStock", "quantityReserved", "code"];
+
     ItemAdmin.COLUMNS_PUBLIC = ["id", "name", "quantityAvailable", "code"];
     return ItemAdmin;
 })();

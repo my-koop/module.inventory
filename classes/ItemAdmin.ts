@@ -1,7 +1,8 @@
 //TODO AbstractItem
 class ItemAdmin {
   public static COLUMNS_ADMIN = ["id", "name", "quantityStock", "quantityReserved", "code"];
-  public static COLUMNS_PUBLIC = ["id", "name", "quantityAvailable","code"]; //Fix me : To be moved when ItemPublic is created
+  //Fix me : To be moved when ItemPublic is created
+  public static COLUMNS_PUBLIC = ["id", "name", "quantityAvailable","code"];
   public id              : number;
   public name            : string;
   public quantityStock   : number;
