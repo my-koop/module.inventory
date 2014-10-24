@@ -12,8 +12,15 @@ declare module mykoop {
 declare module mkinventory {
 
   export class Module implements mykoop.IModule{
-    get(): string;
+    getModuleManager(): mykoop.ModuleManager;
+    getItemsData(callback: (err: Error, result: Item[]) => void);
   }
 
+  export class Item {
+    id: number;
+    code: string;
+    quantityStock: number;
+    name: string;
+  }
 }
 

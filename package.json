@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/my-koop/module.inventory/issues"
   },
-  "homepage": "https://github.com/my-koop/module.inventory"
+  "homepage": "https://github.com/my-koop/module.inventory",
+  "dependencies": {
+    "mykoop-utils": "git://github.com/my-koop/module.utils"
+  }
 }

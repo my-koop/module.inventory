@@ -6,9 +6,9 @@ var ItemList = React.createClass({
   render: function() {
     return (
       <div>
-        <MKItems /> 
+        <MKItems />
       </div>
-    ); 
+    );
   }
 });
 

@@ -7,7 +7,7 @@ var MKTableSorter     = require("components/TableSorter");
 var MKListModButtons  = require("components/ListModButtons");
 var MKItemEditModal   = require("./ItemEditModal");
 var __                = require("language").__;
-var ajax              = require("ajax");
+var actions           = require("actions");
 
 var Items = React.createClass({
   getInitialState: function(){
@@ -19,17 +19,17 @@ var Items = React.createClass({
   componentWillMount: function() {
     var self = this;
 
-    var itemsData = ajax.request(
-      {endpoint: "/inventory/requests/items"},
-      function(err, res){
-        if (err) {
-          console.error(status, err.toString());
-          return;
-        }
-        // use res object
-        self.setState({items:res.body});
+  componentWillMount: function(){
+    var self = this;
+
+    actions.inventory.list(function (err, res) {
+      if (err) {
+        console.error(res.status, err.toString());
+        return;
       }
-    );
+
+      self.setState({items: res.body.items});
+    });
   },
 
   actionsGenerator: function(item){
