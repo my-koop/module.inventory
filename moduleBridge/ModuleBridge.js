@@ -26,7 +26,7 @@ var ModuleBridge = (function () {
                                         value: "ItemList"
                                     },
                                     name: "items",
-                                    path: "/inventory/itemlist"
+                                    path: "/Dashboard/Items"
                                 }
                             }
                         }

@@ -26,3 +26,8 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+#Link & Sublime
+inventory.sublime-workspace
+typings/mykoop/mykoop.d.ts
+typings/mykoop-database/mykoop-database.d.ts

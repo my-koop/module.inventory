@@ -1,23 +1,24 @@
 import express = require('express');
-import Item = require("../classes/Item");
+import ItemAdmin = require("../classes/ItemAdmin");
 
 function ItemsData(db: mkdatabase.Module, req: express.Request, res: express.Response) {
   var items = [];
   if(db){
     db.getConnection(function(err, connection) {
-      var query = connection.query('SELECT ?? FROM ??', [['id', 'code', 'quantityStock', 'code'], 'item_list'], function(err, rows) {
+      var query = connection.query('SELECT ?? FROM ??', [ItemAdmin.COLUMNS_ADMIN, 'item_list'], function(err, rows) {
         if (err){
           throw err;
         }
 
         for (var i in rows) {
           var currItem = rows[i];
-          items.push(new Item(currItem['id'], currItem['code'], currItem['quantityStock'], currItem['code']));
+          items.push(new ItemAdmin(currItem));
         }
 
         res.json(
          items
         );
+
       });
     });
   }

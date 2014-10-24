@@ -29,7 +29,7 @@ class ModuleBridge implements mykoop.IModuleBridge {
                     value: "ItemList"
                   },
                   name: "items",
-                  path: "/inventory/itemlist"
+                  path: "/Dashboard/Items"
                 }
               }
             }
