@@ -4,7 +4,7 @@ var __ = require("language").__;
 var MKItems = require("./Items");
 
 var ItemList = React.createClass({
-	componentDidMount: function(){
+  componentDidMount: function(){
     style.use();
   },
 
@@ -13,12 +13,12 @@ var ItemList = React.createClass({
   },
 
   render: function() {
-		return (
+    return (
       <div>
         <MKItems /> 
       </div>
     ); 
-	}
+  }
 });
 
 module.exports = ItemList;
