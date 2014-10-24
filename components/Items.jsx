@@ -5,12 +5,11 @@ var BSModalTrigger    = require("react-bootstrap/ModalTrigger");
 var MKIcon            = require("components/Icon");
 var MKTableSorter     = require("components/TableSorter");
 var MKListModButtons  = require("components/ListModButtons");
-var MKItemEditModal   = require("components/ItemEditModal");
+var MKItemEditModal   = require("./ItemEditModal");
 var __                = require("language").__;
 var ajax              = require("ajax");
 
 var Items = React.createClass({
-
   getInitialState: function(){
     return {
       items: []
