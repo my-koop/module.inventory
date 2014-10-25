@@ -16,12 +16,12 @@ var Items = React.createClass({
     }
   },
 
-  componentWillMount: function(){
+  componentWillMount: function() {
     var self = this;
 
     actions.inventory.list(function (err, res) {
       if (err) {
-        console.error(res.status, err.toString());
+        console.error.apply(console, [err].concat(res ? res.status : []));
         return;
       }
 
