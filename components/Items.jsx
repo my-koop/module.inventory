@@ -16,9 +16,6 @@ var Items = React.createClass({
     }
   },
 
-  componentWillMount: function() {
-    var self = this;
-
   componentWillMount: function(){
     var self = this;
 

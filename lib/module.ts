@@ -4,7 +4,7 @@ import mysql = require("mysql");
 import InventoryModuleControllers = require("./controllers");
 import controllerList = require("../controllers/index");
 
-import Item = require("../classes/Item");
+import ItemAdmin = require("../classes/ItemAdmin");
 
 class InventoryModule implements mkinventory.Module {
   private moduleManager: mykoop.ModuleManager;
@@ -29,30 +29,21 @@ class InventoryModule implements mkinventory.Module {
     return this.moduleManager;
   }
 
-  getItemsData(callback: (err: Error, result: Item[]) => void) {
+  getItemsData(callback: (err: Error, result: ItemAdmin[]) => void) {
     var items = [];
 
     this.db.getConnection(function(err, connection) {
       var query = connection.query(
         "SELECT ?? FROM ??",
-        [
-          ["id", "code", "quantityStock", "code"],
-          "item_list"
-        ], function(err, rows) {
+        [ItemAdmin.COLUMNS_ADMIN, "item_list"],
+        function(err, rows) {
           if (err){
             throw err;
           }
 
           for (var i in rows) {
             var currItem = rows[i];
-            items.push(
-              new Item(
-                currItem.id,
-                currItem.code,
-                currItem.quantityStock,
-                currItem.code
-              )
-            );
+             items.push(new ItemAdmin(currItem));
           }
 
           callback(null, items);

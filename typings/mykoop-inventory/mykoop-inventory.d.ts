@@ -13,14 +13,18 @@ declare module mkinventory {
 
   export class Module implements mykoop.IModule{
     getModuleManager(): mykoop.ModuleManager;
-    getItemsData(callback: (err: Error, result: Item[]) => void);
+    getItemsData(callback: (err: Error, result: ItemAdmin[]) => void);
   }
 
-  export class Item {
-    id: number;
-    code: string;
-    quantityStock: number;
-    name: string;
+  export class ItemAdmin {
+    COLUMNS_ADMIN   : string[];
+    //Fix me : To be moved when ItemPublic is created
+    COLUMNS_PUBLIC  : string[];
+    id              : number;
+    name            : string;
+    quantityStock   : number;
+    quantityReserved: number;
+    code            : string;
   }
 }
 
