@@ -1,3 +1,3 @@
 module.exports = {
-	ItemList: require("./ItemList.jsx")
+	ItemsPage: require("./ItemsPage.jsx")
 };
