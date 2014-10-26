@@ -1,7 +1,7 @@
 class InventoryModuleControllers {
   private moduleManager: mykoop.ModuleManager;
   private inventory: mkinventory.Module;
-  private routerModule: any;
+  private routerModule: mykoop.Router;
 
   constructor(inventory: mkinventory.Module) {
     this.inventory = inventory;
@@ -10,7 +10,7 @@ class InventoryModuleControllers {
   }
 
   attach(
-    params: any,
+    params: mykoop.RouteParams,
     controller: (
       req: express.Request,
       res: express.Response,

@@ -1,4 +1,2 @@
-module.exports = {
-  en: require("./en"),
-  fr: require("./fr"),
-}
+exports.en = require("./en");
+exports.fr = require("./fr");

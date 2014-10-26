@@ -9,7 +9,7 @@ import ItemAdmin = require("../classes/ItemAdmin");
 class InventoryModule implements mkinventory.Module {
   private moduleManager: mykoop.ModuleManager;
   private db: mkdatabase.Module;
-  private controllers: any;
+  private controllers: InventoryModuleControllers;
 
   init(moduleManager: mykoop.ModuleManager){
     var self = this;
@@ -32,7 +32,7 @@ class InventoryModule implements mkinventory.Module {
   getItemsData(callback: (err: Error, result: ItemAdmin[]) => void) {
     var items = [];
 
-    this.db.getConnection(function(err, connection) {
+    this.db.getConnection(function(err, connection, cleanup) {
       var query = connection.query(
         "SELECT ?? FROM ??",
         [ItemAdmin.COLUMNS_ADMIN, "item_list"],
@@ -40,6 +40,9 @@ class InventoryModule implements mkinventory.Module {
           if (err){
             throw err;
           }
+
+          // We cleanup already because we don't need the connection anymore.
+          cleanup();
 
           for (var i in rows) {
             var currItem = rows[i];
