@@ -7,16 +7,16 @@ var endpoints = {
             method: "get"
         },
         item: {
+            update: {
+                path: "/inventory/item/:id",
+                method: "post"
+            },
             add: {
                 path: "/inventory/item",
                 method: "post"
             },
             getOne: {
                 path: "/inventory/item/:id",
-                method: "get"
-            },
-            getPrice: {
-                path: "/inventory/item/:id/price",
                 method: "get"
             },
             remove: {

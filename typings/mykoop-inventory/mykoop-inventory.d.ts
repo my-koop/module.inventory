@@ -10,20 +10,18 @@ declare module mykoop {
 }
 
 declare module mkinventory {
-
   export interface Module extends mykoop.IModule{
-    getItemsData(callback: (err: Error, result: ItemAdmin[]) => void);
+    getItemsData(callback: (err: Error, result: Item[]) => void);
+    updateItem(updateData, id, callback: (err: Error, result: Item[]) => void);
   }
 
-  export class ItemAdmin {
-    COLUMNS_ADMIN   : string[];
-    //Fix me : To be moved when ItemPublic is created
-    COLUMNS_PUBLIC  : string[];
+  export class Item {
     id              : number;
     name            : string;
     quantityStock   : number;
     quantityReserved: number;
     code            : string;
+    price           : number;
   }
 }
 
