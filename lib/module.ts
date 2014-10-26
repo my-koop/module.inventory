@@ -53,6 +53,24 @@ class InventoryModule implements mkinventory.Module {
       });
     });
   }
+
+  updateItem(updateData, id, callback: (err: Error, result: ItemAdmin[]) => void) {
+    this.db.getConnection(function(err, connection, cleanup) {
+      var query = connection.query(
+        "UPDATE item SET ?? WHERE id = ??",
+        [updateData, id],
+        function(err, rows) {
+          if (err){
+            throw err;
+          }
+
+          // We cleanup already because we don't need the connection anymore.
+          cleanup();
+
+          callback(null, null);
+      });
+    });
+  }
 }
 
 export = InventoryModule;
