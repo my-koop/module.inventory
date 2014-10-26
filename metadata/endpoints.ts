@@ -9,13 +9,13 @@ var endpoints = {
     item: {
       update: {
         path: "/inventory/item/:id",
-        method: "post"
+        method: "put"
       },
       add: {
         path: "/inventory/item",
         method: "post"
       },
-      getOne: {
+      get: {
         path: "/inventory/item/:id",
         method: "get"
       },
@@ -23,10 +23,6 @@ var endpoints = {
         path: "/inventory/item/:id",
         method: "delete"
       }
-    },
-    something: {
-      path: "/inventory/:a/something/:b/:c/else/:d",
-      method: "get"
     }
   }
 };
