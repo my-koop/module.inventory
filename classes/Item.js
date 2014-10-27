@@ -1,8 +1,8 @@
 var Item = (function () {
     function Item(row) {
-        this.id = parseInt(row["id"]);
+        this.id = Number(row["id"]);
         this.name = row["name"];
-        this.price = parseInt(row["price"]) || 0.00;
+        this.price = Number(row["price"]);
         this.code = row["code"];
     }
     Item.COLUMNS_DB = ["id", "name", "price", "code"];
