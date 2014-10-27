@@ -8,7 +8,7 @@ class Item {
   constructor(row: any) {
     this.id     = Number(row["id"]);
     this.name   = row["name"];
-    this.price  = Number(row["price"]);
+    this.price  = Number(row["price"]) || 0.00;
     this.code   = row["code"]; 
   }
 }
