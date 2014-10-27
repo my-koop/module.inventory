@@ -54,12 +54,15 @@ class InventoryModule implements mkinventory.Module {
     });
   }
 
-  updateItem(updateData, id, callback: (err: Error, result: ItemAdmin[]) => void) {
+  updateItem(updateData, id, callback: (err?: Error) => void) {
+    console.log("update data:", updateData);
+    console.log("update on ID:", id);
+
     this.db.getConnection(function(err, connection, cleanup) {
       var query = connection.query(
-        "UPDATE item SET ?? WHERE id = ??",
+        "UPDATE item SET ? WHERE idItem = ?",
         [updateData, id],
-        function(err, rows) {
+        function(err) {
           if (err){
             throw err;
           }
@@ -67,7 +70,7 @@ class InventoryModule implements mkinventory.Module {
           // We cleanup already because we don't need the connection anymore.
           cleanup();
 
-          callback(null, null);
+          callback();
       });
     });
   }

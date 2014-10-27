@@ -71,7 +71,7 @@ var Items = React.createClass({
           }
         },
         warningMessage: "You sure?",
-        modalTrigger: <MKItemEditModal name={item.name} itemId={item.id}/>
+        modalTrigger: <MKItemEditModal item={item} />
       },
     ];
   },
