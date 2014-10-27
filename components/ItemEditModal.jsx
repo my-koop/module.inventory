@@ -1,8 +1,8 @@
-var React = require("react");
+var React    = require("react");
 var BSButton = require("react-bootstrap/Button");
-var BSModal = require("react-bootstrap/Modal");
-var BSInput= require("react-bootstrap/Input");
-var actions           = require("actions");
+var BSModal  = require("react-bootstrap/Modal");
+var BSInput  = require("react-bootstrap/Input");
+var actions  = require("actions");
 
 //TODO AbstractModal
 var ItemEditModal = React.createClass({

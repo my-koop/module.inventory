@@ -3,7 +3,6 @@ import express = require("express");
 import mysql = require("mysql");
 import InventoryModuleControllers = require("./controllers");
 import controllerList = require("../controllers/index");
-
 import ItemAdmin = require("../classes/ItemAdmin");
 
 class InventoryModule implements mkinventory.Module {
