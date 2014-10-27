@@ -70,7 +70,6 @@ var Items = React.createClass({
             placement: "right"
           }
         },
-        warningMessage: "You sure?",
         modalTrigger: <MKItemEditModal item={item} />
       },
     ];
