@@ -23,21 +23,35 @@ var ItemEditModal = React.createClass({
         return;
       }
 
-      console.log("Updated!", res.body);
+      //TODO close the modal. halp. I'm not sure how
     });
   },
 
   render: function () {
     var item = this.props.item;
     return this.transferPropsTo(
-      <BSModal title={"Editing item " + item.name} backdrop="static">
+      <BSModal title={"Editing " + item.name} backdrop="static">
         <div className="modal-body" >
-          <BSInput type="static" label="ID" placeholder="ID" value={item.id} />
-          <BSInput type="text" label="Item Name (EN)" placeholder="Name" defaultValue={item.name} ref="name" />
-          <BSInput type="text" label="Price" placeholder="Price" ref="price" />
+          <BSInput 
+            type="static" 
+            label="ID" 
+            placeholder="ID" 
+            value={item.id} />
+          <BSInput 
+            type="text" 
+            label="Item Name (EN)" 
+            placeholder="Name" 
+            defaultValue={item.name} 
+            ref="name" />
+          <BSInput 
+            type="text" 
+            label="Price" 
+            placeholder="Price" 
+            defaultValue={item.price} 
+            ref="price"  />
         </div>
         <div className="modal-footer">
-          <BSButton onClick={this.onSave.bind(null, item.id)}>Save</BSButton>
+          <BSButton onClick={this.onSave.bind(null, item.id)}>Save and close</BSButton>
           <BSButton onClick={this.props.onRequestHide}>Close</BSButton>
         </div>
       </BSModal>
