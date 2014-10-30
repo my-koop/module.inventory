@@ -21,11 +21,11 @@ var Items = React.createClass({
 
     actions.inventory.list(function (err, res) {
       if (err) {
-        console.error.apply(console, [err].concat(res ? res.status : []));
+        console.error(err);
         return;
       }
 
-      self.setState({items: res.body.items});
+      self.setState({items: res.items});
     });
   },
 
@@ -34,7 +34,7 @@ var Items = React.createClass({
       {
         content: ( <MKIcon glyph="star" library="glyphicon" /> ),
         tooltip: {
-          text: __("saveAsFavorite"),
+          text: __("inventory::saveAsFavorite"),
           overlayProps: {
             placement: "left"
           }

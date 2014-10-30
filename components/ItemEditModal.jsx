@@ -2,9 +2,10 @@ var React    = require("react");
 var BSButton = require("react-bootstrap/Button");
 var BSModal  = require("react-bootstrap/Modal");
 var BSInput  = require("react-bootstrap/Input");
-var MKModal  = require("components/AbstractModal");
-//var MKModal  = require("mykoop-core/components/AbstractModal");
+var BSAlert  = require("react-bootstrap/Alert");
+
 var actions  = require("actions");
+var __ = require("language").__;
 
 //TODO AbstractModal
 var ItemEditModal = React.createClass({
@@ -18,26 +19,28 @@ var ItemEditModal = React.createClass({
 
   getInitialState: function() {
     return {
-      item: this.props.item
+      item: this.props.item,
+      errorMessage: null
     }
   },
 
-  onSave: function (itemId, closeFnc) {
-    console.log(this.refs.name.getValue());
-
+  onSave: function (closeFnc) {
+    var self = this;
     actions.inventory.item.update({
-      query: {
-        id: itemId
-      },
       data: {
-        name: this.refs.name.getValue(),
-        price: parseFloat(this.refs.price.getValue())
+        id: self.state.item.id,
+        name: self.state.item.name,
+        price: parseFloat(self.state.item.price)
       }
     }, function (err, res) {
       if (err) {
-        console.error("Update failed:", err);
+        console.error(err);
+        self.setState({
+          errorMessage: __("inventory::item_update", {context:"failed"})
+        });
         return;
       }
+      self.setState({errorMessage: null});
       closeFnc();
       //TODO close the modal. halp. I'm not sure how
     });
@@ -56,14 +59,21 @@ var ItemEditModal = React.createClass({
     }
   },
 
+  hideModal: function() {
+    this.refs.modal.hide();
+  },
+
   render: function () {
     var item = this.props.item;
     var self = this;
-    return (<MKModal
-      title={"Editing " + item.name}
-      backdrop="static"
-      modalBody={
-        <div>
+    return this.transferPropsTo (
+      <BSModal title={"Editing " + item.name} bsSize="small" backdrop="static">
+        <div className="modal-body">
+          {this.state.errorMessage ?
+            <BSAlert bsStyle="warning">
+              {this.state.errorMessage}
+            </BSAlert>
+          : null}
           <BSInput
             type="static"
             label="ID"
@@ -83,12 +93,12 @@ var ItemEditModal = React.createClass({
             valueLink={self.makeValueLink("price")}
           />
         </div>
-      }
-      footer={
-        <BSButton onClick={self.onSave.bind(null, item.id, this.props.onRequestHide)}>Save and close</BSButton>
-      }
-    >
-    </MKModal>);
+        <div className="modal-footer">
+          <BSButton onClick={self.onSave.bind(self, this.props.onRequestHide)}>Save and close</BSButton>
+          <BSButton type="close" onClick={this.props.onRequestHide} >Close</BSButton>
+        </div>
+      </BSModal>
+    );
   }
 });
 
