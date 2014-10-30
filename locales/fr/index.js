@@ -1,1 +1,1 @@
-exports.general = require("./inventory-general");
+exports.inventory = require("./inventory");

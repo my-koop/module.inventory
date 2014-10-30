@@ -1,5 +1,5 @@
 function addRoutes(metaData) {
-    metaData.addRoute({
+    metaData.addFrontendRoute({
         idPath: ["public", "inventory", "itemPage"],
         component: "ItemsPage",
         name: "items",

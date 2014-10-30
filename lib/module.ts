@@ -3,7 +3,8 @@ import express = require("express");
 import mysql = require("mysql");
 import controllerList = require("../controllers/index");
 import utils = require("mykoop-utils");
-
+import getLogger = require("mykoop-logger");
+var logger = getLogger(module);
 import ItemAdmin = require("../classes/ItemAdmin");
 
 class InventoryModule extends utils.BaseModule implements mkinventory.Module {
@@ -42,20 +43,20 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   }
 
   updateItem(updateData, id, callback: (err?: Error) => void) {
-    console.log("update data:", updateData);
-    console.log("update on ID:", id);
+    logger.verbose("update data:", updateData);
+    logger.verbose("update on ID:", id);
 
     this.db.getConnection(function(err, connection, cleanup) {
       var query = connection.query(
         "UPDATE item SET ? WHERE idItem = ?",
         [updateData, id],
         function(err) {
-          if (err){
-            throw err;
-          }
-
           // We cleanup already because we don't need the connection anymore.
           cleanup();
+
+          if (err){
+            return callback(err);
+          }
 
           callback();
       });
