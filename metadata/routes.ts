@@ -4,6 +4,6 @@ export function addRoutes(metaData: utils.MetaData) {
     idPath: ["public","inventory","itemPage"],
     component: "ItemsPage",
     name: "items",
-    path: "/inventory/items"
+    path: "inventory/items"
   });
 }

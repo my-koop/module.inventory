@@ -3,7 +3,7 @@ function addRoutes(metaData) {
         idPath: ["public", "inventory", "itemPage"],
         component: "ItemsPage",
         name: "items",
-        path: "/inventory/items"
+        path: "inventory/items"
     });
 }
 exports.addRoutes = addRoutes;
