@@ -10,8 +10,7 @@ declare module mykoop {
 }
 
 declare module mkinventory {
-  export class Module implements mykoop.IModule{
-    getModuleManager(): mykoop.ModuleManager;
+  export interface Module extends mykoop.IModule{
     getItemsData(callback: (err: Error, result: Item[]) => void);
     updateItem(updateData, id, callback: (err: Error, result: Item[]) => void);
   }

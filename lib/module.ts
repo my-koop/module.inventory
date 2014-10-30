@@ -1,31 +1,19 @@
 import path = require("path");
 import express = require("express");
 import mysql = require("mysql");
-import InventoryModuleControllers = require("./controllers");
 import controllerList = require("../controllers/index");
+import utils = require("mykoop-utils");
+
 import ItemAdmin = require("../classes/ItemAdmin");
 
-class InventoryModule implements mkinventory.Module {
-  private moduleManager: mykoop.ModuleManager;
+class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   private db: mkdatabase.Module;
-  private controllers: InventoryModuleControllers;
 
-  init(moduleManager: mykoop.ModuleManager){
+  init() {
     var self = this;
 
-    this.moduleManager = moduleManager;
-    var db = <mkdatabase.Module>this.moduleManager.get("database");
-
-    this.controllers = new InventoryModuleControllers(this);
-    controllerList.attachControllers(this.controllers);
-
-    if (db) {
-      this.db = db;
-    }
-  }
-
-  getModuleManager(): mykoop.ModuleManager {
-    return this.moduleManager;
+    this.db = <mkdatabase.Module>this.getModuleManager().get("database");
+    controllerList.attachControllers(new utils.ModuleControllersBinder(this));
   }
 
   getItemsData(callback: (err: Error, result: ItemAdmin[]) => void) {

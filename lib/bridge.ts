@@ -4,13 +4,13 @@ import metaData = require("../metadata/index");
 class ModuleBridge implements mykoop.IModuleBridge {
   instance: InventoryModule;
 
-  constructor(){
+  constructor() {
     this.instance = new InventoryModule();
   }
 
-  onAllModulesInitialized(moduleManager: mykoop.ModuleManager){
+  onAllModulesInitialized() {
     console.log("Hey hey im the inventory and im ready to rumble");
-    this.instance.init(moduleManager);
+    this.instance.init();
   }
 
   getModule() : mykoop.IModule {
