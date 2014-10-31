@@ -7,7 +7,7 @@ class ItemPublic extends Item implements mkinventory.ItemPublic {
 
   constructor(row: any) {
     super(row);
-    this.quantityAvailable = parseInt(row["quantityAvailable"]) || 0;
+    this.quantityAvailable = parseInt(row.quantityAvailable) || 0;
   }
 }
 

@@ -44,13 +44,21 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     });
   }
 
-  updateItem(updateData, id, callback: (err?: Error) => void) {
-    logger.verbose("update on ID:", id);
+  updateItem(data: InventoryInterfaces.UpdateItemData, callback: (err?: Error) => void) {
 
-    if (!validation.updateItem(updateData)) {
-      logger.error("Invalid data", updateData);
+    var validationErrors = validation.updateItem(data);
+    if (validationErrors) {
+      logger.error(validationErrors);
       return callback(new Error("Invalid data"));
     }
+
+    // FIXME:: Actually do some sanitization
+    var sanitizedInput: InventoryDbQueryStruct.ItemData = {
+      name: data.name,
+      price: data.price,
+      code: data.code
+    };
+    var id = data.id;
 
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
@@ -59,7 +67,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
 
       var query = connection.query(
         "UPDATE item SET ? WHERE idItem = ?",
-        [updateData, id],
+        [sanitizedInput, id],
         function(err) {
           // We cleanup already because we don't need the connection anymore.
           cleanup();

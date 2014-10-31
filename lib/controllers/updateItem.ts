@@ -1,15 +1,21 @@
 import express = require("express");
 import Item = require("../classes/Item");
+import getLogger = require("mykoop-logger");
+var logger = getLogger(module);
 
 function updateItem(req: express.Request, res: express.Response) {
-  var t = {
-    name: req.body.name,
-    price: req.body.price
+  var self: mkinventory.Module = this;
+  var data = {
+    id: parseInt(req.param("id")),
+    name: req.param("name"),
+    code: parseInt(req.param("code")),
+    price: parseFloat(req.param("price"))
   }
 
-  this.updateItem(t, req.params.id, function(err) {
+  self.updateItem(data, function(err) {
     if (err) {
-      return res.status(500).send(err);
+      logger.error(err);
+      return res.sendStatus(500);
     }
 
     res.end();

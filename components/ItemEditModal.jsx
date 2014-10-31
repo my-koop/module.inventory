@@ -9,7 +9,8 @@ var __ = require("language").__;
 
 //TODO AbstractModal
 var ItemEditModal = React.createClass({
-  // Chose for a one layer linkedState, because much simpler and faster
+  // Decided for a one layer linkedState, because much simpler and faster
+  // than custom linking and more reliable
   mixins: [React.addons.LinkedStateMixin],
 
   propTypes: {
@@ -60,7 +61,7 @@ var ItemEditModal = React.createClass({
   render: function () {
     var item = this.props.item;
     var self = this;
-    return this.transferPropsTo (
+    return this.transferPropsTo(
       <BSModal
         title={__("inventory::editing") + " " + item.name}
         bsSize="small"

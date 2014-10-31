@@ -4,15 +4,15 @@
 // Definitions: https://github.com/my-koop/type.definitions
 
 /// <reference path="../mykoop/mykoop.d.ts" />
-
-declare module mykoop {
-  export interface IModule {}
-}
+/// <reference path="./interfaces.d.ts" />
 
 declare module mkinventory {
   export interface Module extends mykoop.IModule{
     getItemsData(callback: (err: Error, result: Item[]) => void);
-    updateItem(updateData, id, callback: (err: Error, result: Item[]) => void);
+    updateItem(
+      updateData: InventoryInterfaces.UpdateItemData,
+      callback: (err: Error, result: Item[]) => void
+    );
   }
 
   export interface ItemAdmin extends Item {

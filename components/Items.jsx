@@ -10,7 +10,7 @@ var __                = require("language").__;
 var actions           = require("actions");
 
 var Items = React.createClass({
-  getInitialState: function(){
+  getInitialState: function() {
     return {
       items: []
     }
@@ -29,7 +29,7 @@ var Items = React.createClass({
     });
   },
 
-  actionsGenerator: function(item){
+  actionsGenerator: function(item) {
     return [
       {
         icon: "edit",
@@ -50,7 +50,7 @@ var Items = React.createClass({
             placement: "top"
           }
         },
-        callback: function(){
+        callback: function() {
           alert("You deleted the item, or did you?");
         }
       }
@@ -81,7 +81,7 @@ var Items = React.createClass({
         actions: {
           name: "Actions",
           isStatic: true,
-          cellGenerator: function(item){
+          cellGenerator: function(item) {
             return (
               <MKListModButtons
                 defaultTooltipDelay={500}

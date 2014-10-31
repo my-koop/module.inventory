@@ -1,5 +1,4 @@
 import _ = require("lodash");
-import er = require("../classes/endpointsResponses");
 var Validator = require("jsonschema").Validator;
 var validator = new Validator();
 
