@@ -17,7 +17,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     controllerList.attachControllers(new utils.ModuleControllersBinder(this));
   }
 
-  getItemsData(callback: (err: Error, result: ItemAdmin[]) => void) {
+  getItemsData(callback: (err: Error, result?: ItemAdmin[]) => void) {
     var items = [];
 
     this.db.getConnection(function(err, connection, cleanup) {
@@ -25,12 +25,12 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
         "SELECT ?? FROM ??",
         [ItemAdmin.COLUMNS_ADMIN, "item_list"],
         function(err, rows) {
-          if (err){
-            throw err;
-          }
-
           // We cleanup already because we don't need the connection anymore.
           cleanup();
+
+          if (err) {
+            return callback(err);
+          }
 
           for (var i in rows) {
             var currItem = rows[i];
@@ -54,7 +54,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           // We cleanup already because we don't need the connection anymore.
           cleanup();
 
-          if (err){
+          if (err) {
             return callback(err);
           }
 

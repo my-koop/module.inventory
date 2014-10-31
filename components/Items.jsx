@@ -32,22 +32,14 @@ var Items = React.createClass({
   actionsGenerator: function(item){
     return [
       {
-        content: ( <MKIcon glyph="star" library="glyphicon" /> ),
+        icon: "edit",
         tooltip: {
-          text: __("inventory::saveAsFavorite"),
+          text: "Edit Item",
           overlayProps: {
-            placement: "left"
+            placement: "top"
           }
-        }
-      },
-      {
-        icon: "plus",
-        tooltip: {
-          text: "Increase quantity",
-          overlayProps: {
-            placement: "top",
-          }
-        }
+        },
+        modalTrigger: <MKItemEditModal item={item} />
       },
       {
         icon: "remove",
@@ -61,17 +53,7 @@ var Items = React.createClass({
         callback: function(){
           alert("You deleted the item, or did you?");
         }
-      },
-      {
-        icon: "edit",
-        tooltip: {
-          text: "Edit Item",
-          overlayProps: {
-            placement: "right"
-          }
-        },
-        modalTrigger: <MKItemEditModal item={item} />
-      },
+      }
     ];
   },
 

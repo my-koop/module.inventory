@@ -42,7 +42,6 @@ var ItemEditModal = React.createClass({
       }
       self.setState({errorMessage: null});
       closeFnc();
-      //TODO close the modal. halp. I'm not sure how
     });
   },
 
@@ -70,7 +69,7 @@ var ItemEditModal = React.createClass({
       <BSModal title={"Editing " + item.name} bsSize="small" backdrop="static">
         <div className="modal-body">
           {this.state.errorMessage ?
-            <BSAlert bsStyle="warning">
+            <BSAlert bsStyle="danger">
               {this.state.errorMessage}
             </BSAlert>
           : null}
