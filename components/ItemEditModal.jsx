@@ -39,7 +39,7 @@ var ItemEditModal = React.createClass({
       data: {
         id: self.props.item.id,
         name: self.state.name,
-        code: self.state.code,
+        code: parseInt(self.state.code),
         price: parseFloat(self.state.price)
       }
     }, function (err, res) {
@@ -50,6 +50,8 @@ var ItemEditModal = React.createClass({
         });
         return;
       }
+      // TODO:: Give feedback to user after successful update and refresh table
+      // with new content
       self.setState({errorMessage: null});
       hideFnc();
     });
@@ -71,15 +73,18 @@ var ItemEditModal = React.createClass({
             </BSAlert>
           : null}
           <BSInput
-            type="text"
-            label="Item Name"
-            placeholder="Name"
-            valueLink={self.linkState("name")}
+            type="number"
+            label={__("inventory::code")}
+            valueLink={self.linkState("code")}
           />
           <BSInput
             type="text"
-            label="Price"
-            placeholder="Price"
+            label={__("inventory::itemname")}
+            valueLink={self.linkState("name")}
+          />
+          <BSInput
+            type="number"
+            label={__("inventory::price")}
             valueLink={self.linkState("price")}
           />
         </div>
@@ -87,13 +92,13 @@ var ItemEditModal = React.createClass({
           <BSButton
             onClick={self.onSave.bind(self, this.props.onRequestHide)}
           >
-            Save
+            {__("save")}
           </BSButton>
           <BSButton
             type="close"
             onClick={this.props.onRequestHide}
           >
-            Cancel
+            {__("cancel")}
           </BSButton>
         </div>
       </BSModal>

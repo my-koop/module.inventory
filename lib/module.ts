@@ -6,6 +6,7 @@ import utils = require("mykoop-utils");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 import ItemAdmin = require("./classes/ItemAdmin");
+import ItemPublic = require("./classes/ItemPublic");
 import validation = require("./validation/index");
 
 class InventoryModule extends utils.BaseModule implements mkinventory.Module {

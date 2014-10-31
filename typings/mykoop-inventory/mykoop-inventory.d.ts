@@ -15,12 +15,19 @@ declare module mkinventory {
     updateItem(updateData, id, callback: (err: Error, result: Item[]) => void);
   }
 
-  export class Item {
-    id              : number;
-    name            : string;
+  export interface ItemAdmin extends Item {
     quantityStock   : number;
     quantityReserved: number;
-    code            : string;
+  }
+
+  export interface ItemPublic extends Item {
+    quantityAvailable: number;
+  }
+
+  export interface Item {
+    id              : number;
+    name            : string;
+    code            : number;
     price           : number;
   }
 }
