@@ -1,8 +1,7 @@
 var React = require("react/addons");
-var __ = require("language").__;
 var MKItems = require("./Items");
 
-var ItemList = React.createClass({
+var ItemsPage = React.createClass({
   render: function() {
     return (
       <div>
@@ -12,4 +11,4 @@ var ItemList = React.createClass({
   }
 });
 
-module.exports = ItemList;
+module.exports = ItemsPage;

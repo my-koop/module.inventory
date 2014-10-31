@@ -1,0 +1,7 @@
+{
+  item_update_failed : "Failed to update item description",
+  editing: "Editing",
+  itemname: "Item name",
+  code: "Code",
+  price: "Price"
+}

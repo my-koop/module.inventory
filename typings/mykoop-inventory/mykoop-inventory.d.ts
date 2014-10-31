@@ -4,26 +4,31 @@
 // Definitions: https://github.com/my-koop/type.definitions
 
 /// <reference path="../mykoop/mykoop.d.ts" />
-
-declare module mykoop {
-  export interface IModule {}
-}
+/// <reference path="./interfaces.d.ts" />
 
 declare module mkinventory {
-
   export interface Module extends mykoop.IModule{
-    getItemsData(callback: (err: Error, result: ItemAdmin[]) => void);
+    getItemsData(callback: (err: Error, result: Item[]) => void);
+    updateItem(
+      updateData: InventoryInterfaces.UpdateItemData,
+      callback: (err: Error, result: Item[]) => void
+    );
   }
 
-  export class ItemAdmin {
-    COLUMNS_ADMIN   : string[];
-    //Fix me : To be moved when ItemPublic is created
-    COLUMNS_PUBLIC  : string[];
-    id              : number;
-    name            : string;
+  export interface ItemAdmin extends Item {
     quantityStock   : number;
     quantityReserved: number;
-    code            : string;
+  }
+
+  export interface ItemPublic extends Item {
+    quantityAvailable: number;
+  }
+
+  export interface Item {
+    id              : number;
+    name            : string;
+    code            : number;
+    price           : number;
   }
 }
 

@@ -10,7 +10,7 @@ var __                = require("language").__;
 var actions           = require("actions");
 
 var Items = React.createClass({
-  getInitialState: function(){
+  getInitialState: function() {
     return {
       items: []
     }
@@ -21,33 +21,25 @@ var Items = React.createClass({
 
     actions.inventory.list(function (err, res) {
       if (err) {
-        console.error.apply(console, [err].concat(res ? res.status : []));
+        console.error(err);
         return;
       }
 
-      self.setState({items: res.body.items});
+      self.setState({items: res.items});
     });
   },
 
-  actionsGenerator: function(item){
+  actionsGenerator: function(item) {
     return [
       {
-        content: ( <MKIcon glyph="star" library="glyphicon" /> ),
+        icon: "edit",
         tooltip: {
-          text: __("saveAsFavorite"),
+          text: "Edit Item",
           overlayProps: {
-            placement: "left"
+            placement: "top"
           }
-        }
-      },
-      {
-        icon: "plus",
-        tooltip: {
-          text: "Increase quantity",
-          overlayProps: {
-            placement: "top",
-          }
-        }
+        },
+        modalTrigger: <MKItemEditModal item={item} />
       },
       {
         icon: "remove",
@@ -58,21 +50,10 @@ var Items = React.createClass({
             placement: "top"
           }
         },
-        callback: function(){
+        callback: function() {
           alert("You deleted the item, or did you?");
         }
-      },
-      {
-        icon: "edit",
-        tooltip: {
-          text: "Edit Item",
-          overlayProps: {
-            placement: "right"
-          }
-        },
-        warningMessage: "You sure?",
-        modalTrigger: <MKItemEditModal name={item.name} itemId={item.id}/>
-      },
+      }
     ];
   },
 
@@ -100,7 +81,7 @@ var Items = React.createClass({
         actions: {
           name: "Actions",
           isStatic: true,
-          cellGenerator: function(item){
+          cellGenerator: function(item) {
             return (
               <MKListModButtons
                 defaultTooltipDelay={500}
