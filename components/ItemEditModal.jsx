@@ -1,4 +1,4 @@
-var React    = require("react");
+var React    = require("react/addons");
 var BSButton = require("react-bootstrap/Button");
 var BSModal  = require("react-bootstrap/Modal");
 var BSInput  = require("react-bootstrap/Input");
@@ -9,28 +9,38 @@ var __ = require("language").__;
 
 //TODO AbstractModal
 var ItemEditModal = React.createClass({
+  // Chose for a one layer linkedState, because much simpler and faster
+  mixins: [React.addons.LinkedStateMixin],
+
   propTypes: {
     item: React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
+      code: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
       price: React.PropTypes.number.isRequired
     }).isRequired
   },
 
   getInitialState: function() {
+    // making a copy of item props because keeping this.props.item
+    // was keeping a pointer to item, therefore modifying it when modifying
+    // the state
     return {
-      item: this.props.item,
+      name: this.props.item.name,
+      code: this.props.item.code,
+      price: this.props.item.price,
       errorMessage: null
     }
   },
 
-  onSave: function (closeFnc) {
+  onSave: function (hideFnc) {
     var self = this;
     actions.inventory.item.update({
       data: {
-        id: self.state.item.id,
-        name: self.state.item.name,
-        price: parseFloat(self.state.item.price)
+        id: self.props.item.id,
+        name: self.state.name,
+        code: self.state.code,
+        price: parseFloat(self.state.price)
       }
     }, function (err, res) {
       if (err) {
@@ -41,32 +51,19 @@ var ItemEditModal = React.createClass({
         return;
       }
       self.setState({errorMessage: null});
-      closeFnc();
+      hideFnc();
     });
-  },
-
-  handleFieldChange: function(field, newValue) {
-    var item = this.state.item;
-    item[field] = newValue;
-    this.setState({item: item});
-  },
-
-  makeValueLink: function(field) {
-    return {
-      value: this.state.item[field],
-      requestChange: this.handleFieldChange.bind(this, field)
-    }
-  },
-
-  hideModal: function() {
-    this.refs.modal.hide();
   },
 
   render: function () {
     var item = this.props.item;
     var self = this;
     return this.transferPropsTo (
-      <BSModal title={"Editing " + item.name} bsSize="small" backdrop="static">
+      <BSModal
+        title={__("inventory::editing") + " " + item.name}
+        bsSize="small"
+        backdrop="static"
+      >
         <div className="modal-body">
           {this.state.errorMessage ?
             <BSAlert bsStyle="danger">
@@ -74,27 +71,30 @@ var ItemEditModal = React.createClass({
             </BSAlert>
           : null}
           <BSInput
-            type="static"
-            label="ID"
-            placeholder="ID"
-            value={item.id}
-          />
-          <BSInput
             type="text"
-            label="Item Name (EN)"
+            label="Item Name"
             placeholder="Name"
-            valueLink={self.makeValueLink("name")}
+            valueLink={self.linkState("name")}
           />
           <BSInput
             type="text"
             label="Price"
             placeholder="Price"
-            valueLink={self.makeValueLink("price")}
+            valueLink={self.linkState("price")}
           />
         </div>
         <div className="modal-footer">
-          <BSButton onClick={self.onSave.bind(self, this.props.onRequestHide)}>Save and close</BSButton>
-          <BSButton type="close" onClick={this.props.onRequestHide} >Close</BSButton>
+          <BSButton
+            onClick={self.onSave.bind(self, this.props.onRequestHide)}
+          >
+            Save
+          </BSButton>
+          <BSButton
+            type="close"
+            onClick={this.props.onRequestHide}
+          >
+            Cancel
+          </BSButton>
         </div>
       </BSModal>
     );
