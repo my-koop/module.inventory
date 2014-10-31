@@ -9,7 +9,11 @@ var endpoints = {
     item: {
       update: {
         path: "/inventory/item/:id",
-        method: "put"
+        method: "put",
+        validation: {
+          resolve: "validation",
+          value: "updateItem"
+        }
       },
       add: {
         path: "/inventory/item",

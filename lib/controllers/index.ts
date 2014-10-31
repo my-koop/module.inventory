@@ -1,4 +1,4 @@
-import metaData = require("../metadata/index");
+import metaData = require("../../metadata/index");
 
 // Controllers.
 import itemsData = require ("./itemsData");

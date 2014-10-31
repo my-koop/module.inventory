@@ -1,11 +1,12 @@
 import path = require("path");
 import express = require("express");
 import mysql = require("mysql");
-import controllerList = require("../controllers/index");
+import controllerList = require("./controllers/index");
 import utils = require("mykoop-utils");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
-import ItemAdmin = require("../classes/ItemAdmin");
+import ItemAdmin = require("./classes/ItemAdmin");
+import validation = require("./validation/index");
 
 class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   private db: mkdatabase.Module;
@@ -43,10 +44,18 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   }
 
   updateItem(updateData, id, callback: (err?: Error) => void) {
-    logger.verbose("update data:", updateData);
     logger.verbose("update on ID:", id);
 
+    if (!validation.updateItem(updateData)) {
+      logger.error("Invalid data", updateData);
+      return callback(new Error("Invalid data"));
+    }
+
     this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err);
+      }
+
       var query = connection.query(
         "UPDATE item SET ? WHERE idItem = ?",
         [updateData, id],
