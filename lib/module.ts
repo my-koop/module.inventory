@@ -23,6 +23,9 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     var items = [];
 
     this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err);
+      }
       var query = connection.query(
         "SELECT ?? FROM ??",
         [ItemAdmin.COLUMNS_ADMIN, "item_list"],
@@ -52,8 +55,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
       return callback(new Error("Invalid data"));
     }
 
-    // FIXME:: Actually do some sanitization
-    var sanitizedInput: InventoryDbQueryStruct.ItemData = {
+    var queryData: InventoryDbQueryStruct.ItemData = {
       name: data.name,
       price: data.price,
       code: data.code
@@ -67,7 +69,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
 
       var query = connection.query(
         "UPDATE item SET ? WHERE idItem = ?",
-        [sanitizedInput, id],
+        [queryData, id],
         function(err) {
           // We cleanup already because we don't need the connection anymore.
           cleanup();
@@ -75,7 +77,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           if (err) {
             return callback(err);
           }
-
+          // TODO:: Return updated item data
           callback();
       });
     });
