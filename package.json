@@ -6,7 +6,7 @@
       "database": true
     }
   },
-  "version": "0.0.1",
+  "version": "1.0.0-alpha",
   "description": "Inventory module for My Koop responsible for item's definitions and management",
   "main": "index.js",
   "scripts": {
