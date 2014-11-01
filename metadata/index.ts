@@ -3,12 +3,12 @@ import routes = require("./routes");
 var translations = require("../locales");
 import endpoints = require("./endpoints");
 
-var metaData = new utils.MetaData();
-routes.addRoutes(metaData);
+var metaDataBuilder = new utils.MetaDataBuilder();
+routes.addRoutes(metaDataBuilder);
 
-metaData.addData("translations", translations);
-metaData.addData("endpoints", endpoints);
+metaDataBuilder.addData("translations", translations);
+metaDataBuilder.addData("endpoints", endpoints);
 
-var metaDataExport = metaData.get();
+var metaDataExport = metaDataBuilder.get();
 
 export = metaDataExport;
