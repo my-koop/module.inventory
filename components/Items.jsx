@@ -52,7 +52,12 @@ var Items = React.createClass({
         },
         callback: function() {
           var id = item.id;
-          actions.inventory.item.remove(function(id, err, res){
+          actions.inventory.item.remove(
+          {
+            data: {
+              id : id
+            }
+          },function(err, res){
             if (err) {
               console.error(err);
               return;

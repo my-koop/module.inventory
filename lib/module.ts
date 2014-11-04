@@ -89,7 +89,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
       if(err) {
         return callback(err);
       }
-      
+      logger.verbose(id);
       var query = connection.query(
         "DELETE from item WHERE idItem = ?",
         [id],
