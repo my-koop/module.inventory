@@ -44,7 +44,7 @@ var ItemEditModal = React.createClass({
         name: self.state.name,
         code: parseInt(self.state.code),
         price: parseFloat(self.state.price),
-        threshold: parseInt(self.state.code)
+        threshold: parseInt(self.state.threshold)
       }
     }, function (err, res) {
       if (err) {
