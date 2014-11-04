@@ -15,4 +15,11 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     name: "items",
     path: "items"
   });
+
+  metaDataBuilder.addFrontendRoute({
+    idPath: ["dashboard", "inventory", "itemsbelowthreshold"],
+    component: "ItemsBelowThreshold",
+    name: "itemsbelowthreshold",
+    path: "itemsbelowthreshold"
+  });
 }
