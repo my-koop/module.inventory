@@ -5,8 +5,6 @@ var logger = getLogger(module);
 
 function deleteItem(req: express.Request, res: express.Response) {
   var idItem = parseInt(req.param("id"));
-  logger.verbose(idItem);
-  logger.verbose(req.param("id"));
   this.deleteItem(idItem, function(err) {
     if (err) {
       logger.error(err);
