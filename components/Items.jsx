@@ -114,10 +114,6 @@ var Items = React.createClass({
             hover
           />
         </div>
-
-         <BSButton>
-        Delete id 1
-        </BSButton>
       </BSCol>
     );
   }
