@@ -82,6 +82,29 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
       });
     });
   }
+
+
+  deleteItem(id: Number, callback: (err?: Error) => void) {
+    this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err);
+      }
+      
+      var query = connection.query(
+        "DELETE from item WHERE idItem = ?",
+        [id],
+        function(err) {
+          // We cleanup already because we don't need the connection anymore.
+          cleanup();
+
+          if (err) {
+            return callback(err);
+          }
+
+          callback();
+      });
+    });
+  }
 }
 
 export = InventoryModule;

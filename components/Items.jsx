@@ -51,7 +51,15 @@ var Items = React.createClass({
           }
         },
         callback: function() {
-          alert("You deleted the item, or did you?");
+          var id = item.id;
+          actions.inventory.item.remove(function(id, err, res){
+            if (err) {
+              console.error(err);
+              return;
+            }
+
+            alert("You deleted the item : " + item.name);
+          });
         }
       }
     ];
@@ -106,6 +114,10 @@ var Items = React.createClass({
             hover
           />
         </div>
+
+         <BSButton>
+        Delete id 1
+        </BSButton>
       </BSCol>
     );
   }
