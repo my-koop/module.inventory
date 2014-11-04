@@ -18,7 +18,8 @@ var ItemEditModal = React.createClass({
       id: React.PropTypes.number.isRequired,
       code: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
-      price: React.PropTypes.number.isRequired
+      price: React.PropTypes.number.isRequired,
+      threshold: React.PropTypes.number.isRequired
     }).isRequired
   },
 
@@ -30,6 +31,7 @@ var ItemEditModal = React.createClass({
       name: this.props.item.name,
       code: this.props.item.code,
       price: this.props.item.price,
+      threshold: this.props.item.threshold,
       errorMessage: null
     }
   },
@@ -41,7 +43,8 @@ var ItemEditModal = React.createClass({
         id: self.props.item.id,
         name: self.state.name,
         code: parseInt(self.state.code),
-        price: parseFloat(self.state.price)
+        price: parseFloat(self.state.price),
+        threshold: parseInt(self.state.code)
       }
     }, function (err, res) {
       if (err) {
@@ -87,6 +90,11 @@ var ItemEditModal = React.createClass({
             type="number"
             label={__("inventory::price")}
             valueLink={self.linkState("price")}
+          />
+          <BSInput
+            type="number"
+            label={__("inventory::threshold")}
+            valueLink={self.linkState("threshold")}
           />
         </div>
         <div className="modal-footer">

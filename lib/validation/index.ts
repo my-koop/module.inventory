@@ -18,7 +18,8 @@ var updateItemSchema = {
     "id": {"type": "number", "required": true},
     "code": {"type": "number", "required": true},
     "name": {"type": "string", "required": true},
-    "price": {"type": "number", "required": true}
+    "price": {"type": "number", "required": true},
+    "threshold": {"type": "number", "required": true}
   }
 }
 validator.addSchema(updateItemSchema, updateItemSchema.id);

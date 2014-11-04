@@ -3,5 +3,6 @@
   editing: "Édition de",
   itemname: "Nom de l'article",
   code: "Code",
-  price: "Prix"
+  price: "Prix",
+  threshold: "Seuil minimal"
 }

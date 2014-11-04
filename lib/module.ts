@@ -58,7 +58,8 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     var queryData: InventoryDbQueryStruct.ItemData = {
       name: data.name,
       price: data.price,
-      code: data.code
+      code: data.code,
+      threshold: data.threshold
     };
     var id = data.id;
 
