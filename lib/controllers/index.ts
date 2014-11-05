@@ -5,7 +5,7 @@ import itemsData = require ("./itemsData");
 import updateItem = require ("./updateItem");
 import deleteItem = require ("./deleteItem");
 import itemsBelowThresholdData = require ("./itemsBelowThresholdData");
-import updateDataConstraint = require("../validation/index");
+import validation  = require("../validation/index");
 
 var endPoints = metaData.endpoints;
 
@@ -18,7 +18,7 @@ export function attachControllers(inventoryModuleControllers) {
   inventoryModuleControllers.attach(
     {
       endPoint: endPoints.inventory.item.update,
-      validation: updateDataConstraint.updateItem
+      validation: validation.updateItem
     },
     updateItem
   );

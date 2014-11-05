@@ -2,7 +2,7 @@ var validate = require("mykoop-utils/common").validation;
 
 var updateDataConstraint = {
   id: {
-    presence: false,
+    presence: true,
     numericality: {
       onlyInteger: true,
       greaterThan: 0
