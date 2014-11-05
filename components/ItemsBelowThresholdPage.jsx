@@ -55,7 +55,6 @@ var Items = React.createClass({
           <MKTableSorter
             config={CONFIG}
             items={this.state.items}
-            headerRepeat={8}
             striped
             bordered
             condensed
