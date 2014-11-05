@@ -57,7 +57,7 @@ var Items = React.createClass({
             data: {
               id : id
             }
-          },function(err, res){
+          }, function(err, res){
             if (err) {
               console.error(err);
               return;
@@ -106,13 +106,13 @@ var Items = React.createClass({
       }
     };
 
+    //Fixme : Add default value for headerRepeat in TableSorter
     return (
       <BSCol md={12}>
         <div>
           <MKTableSorter
             config={CONFIG}
             items={this.state.items}
-            headerRepeat={8}
             striped
             bordered
             condensed

@@ -27,6 +27,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
       if(err) {
         return callback(err);
       }
+
       var query = connection.query(
         "SELECT ?? FROM ??",
         [ItemAdmin.COLUMNS_ADMIN, "item_list"],
@@ -41,6 +42,33 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           for (var i in rows) {
             var currItem = rows[i];
              items.push(new ItemAdmin(currItem));
+          }
+
+          callback(null, items);
+      });
+    });
+  }
+
+  getItemsBelowThresholdData(callback: (err: Error, result?: ItemAdmin[]) => void) {
+    var items = [];
+
+    this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err);
+      }
+      var query = connection.query(
+        "SELECT ?? FROM ?? where quantityStock < threshold",
+        [ItemAdmin.COLUMNS_ADMIN, "item_list"],
+        function(err, rows) {
+          cleanup();
+
+          if (err) {
+            return callback(err);
+          }
+
+          for (var i in rows) {
+            var currItem = rows[i];
+            items.push(new ItemAdmin(currItem));
           }
 
           callback(null, items);

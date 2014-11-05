@@ -7,7 +7,6 @@ var BSAlert  = require("react-bootstrap/Alert");
 var actions  = require("actions");
 var __ = require("language").__;
 var _  = require("lodash");
-
 var MKItemEditForm = require("./ItemEditForm");
 
 //TODO AbstractModal
