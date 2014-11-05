@@ -3,5 +3,7 @@
   editing: "Editing",
   itemname: "Item name",
   code: "Code",
-  price: "Price"
+  price: "Price",
+  threshold : "Minimal quantity",
+  removedItemMessage: "You deleted the item"
 }

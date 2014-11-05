@@ -34,7 +34,7 @@ var Items = React.createClass({
       {
         icon: "edit",
         tooltip: {
-          text: "Edit Item",
+          text: __("inventory::editItem"),
           overlayProps: {
             placement: "top"
           }
@@ -43,15 +43,28 @@ var Items = React.createClass({
       },
       {
         icon: "remove",
-        warningMessage: "Are you sure?",
+        warningMessage: __("general::areYouSure"),
         tooltip: {
-          text: "Delete",
+          text: __("general::remove"),
           overlayProps: {
             placement: "top"
           }
         },
         callback: function() {
-          alert("You deleted the item, or did you?");
+          var id = item.id;
+          actions.inventory.item.remove(
+          {
+            data: {
+              id : id
+            }
+          },function(err, res){
+            if (err) {
+              console.error(err);
+              return;
+            }
+
+            alert(__("inventory::removedItemMessage") + ": " + item.name);
+          });
         }
       }
     ];
@@ -64,22 +77,22 @@ var Items = React.createClass({
     var CONFIG = {
       columns: {
         id: {
-          name: "ID",
+          name: __("inventory::id"),
         },
         name: {
-          name: "Name",
+          name: __("inventory::name"),
         },
         quantityStock: {
-          name: "Quantity stock",
+          name: __("inventory::quantityStock"),
         },
         quantityReserved: {
-          name: "Quantity reserved",
+          name: __("inventory::quantityReserved"),
         },
         code: {
-          name: "Code",
+          name: __("inventory::code"),
         },
         actions: {
-          name: "Actions",
+          name: __("inventory::actions"),
           isStatic: true,
           cellGenerator: function(item) {
             return (

@@ -58,7 +58,8 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     var queryData: InventoryDbQueryStruct.ItemData = {
       name: data.name,
       price: data.price,
-      code: data.code
+      code: data.code,
+      threshold: data.threshold
     };
     var id = data.id;
 
@@ -78,6 +79,28 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
             return callback(err);
           }
           // TODO:: Return updated item data
+          callback();
+      });
+    });
+  }
+
+
+  deleteItem(id: Number, callback: (err?: Error) => void) {
+    this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err);
+      }
+      var query = connection.query(
+        "DELETE from item WHERE idItem = ?",
+        [id],
+        function(err) {
+          // We cleanup already because we don't need the connection anymore.
+          cleanup();
+
+          if (err) {
+            return callback(err);
+          }
+
           callback();
       });
     });
