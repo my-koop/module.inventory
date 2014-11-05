@@ -7,23 +7,21 @@ var routeData = require("dynamic-metadata").routes;
 
 var ItemsPage = React.createClass({
   goToNewItemPage: function() {
-    reactRouter.transitionTo(routeData.dashboard.children.inventory.children.createItem);
+    reactRouter.transitionTo(routeData.dashboard.children.inventory.children.createItem.name);
   },
 
   render: function() {
     return (
-      <header>
-        {__("inventory::inventoryWelcome")}
-      </header>
       <div>
+        <h1>
+          {__("inventory::inventoryWelcome")}
+        </h1>
         <BSButton
           onClick={this.goToNewItemPage}
           bsStyle="success"
         >
           {__("inventory::newItem")}
         </BSButton>
-      </div>
-      <div>
         <MKItems />
       </div>
     );
