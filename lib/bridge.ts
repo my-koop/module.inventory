@@ -9,7 +9,6 @@ class ModuleBridge implements mykoop.IModuleBridge {
   }
 
   onAllModulesInitialized() {
-    console.log("Hey hey im the inventory and im ready to rumble");
     this.instance.init();
   }
 
