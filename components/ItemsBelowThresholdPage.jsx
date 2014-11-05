@@ -1,11 +1,6 @@
 var React             = require("react");
 var BSCol             = require("react-bootstrap/Col");
-var BSButton          = require("react-bootstrap/Button");
-var BSModalTrigger    = require("react-bootstrap/ModalTrigger");
-var MKIcon            = require("mykoop-core/components/Icon");
 var MKTableSorter     = require("mykoop-core/components/TableSorter");
-var MKListModButtons  = require("mykoop-core/components/ListModButtons");
-var MKItemEditModal   = require("./ItemEditModal");
 var __                = require("language").__;
 var actions           = require("actions");
 

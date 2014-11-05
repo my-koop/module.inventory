@@ -8,9 +8,18 @@
 
 declare module mkinventory {
   export interface Module extends mykoop.IModule{
-    getItemsData(callback: (err: Error, result: Item[]) => void);
+    getItemsData(
+      callback: (err: Error, result: Item[]) => void
+    );
     updateItem(
       updateData: InventoryInterfaces.UpdateItemData,
+      callback: (err: Error, result: Item[]) => void
+    );
+    getItemsBelowThresholdData(
+      callback: (err: Error, result: Item[]) => void
+    );
+    deleteItem(
+      idItem : Number,
       callback: (err: Error, result: Item[]) => void
     );
   }
@@ -29,6 +38,7 @@ declare module mkinventory {
     name            : string;
     code            : number;
     price           : number;
+    threshold       : number;
   }
 }
 

@@ -4,8 +4,8 @@ var BSModal  = require("react-bootstrap/Modal");
 var BSInput  = require("react-bootstrap/Input");
 var BSAlert  = require("react-bootstrap/Alert");
 
-var actions  = require("actions");
-var __ = require("language").__;
+var actions     = require("actions");
+var __          = require("language").__;
 
 //TODO AbstractModal
 var ItemEditModal = React.createClass({

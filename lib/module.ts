@@ -26,6 +26,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
       if(err) {
         return callback(err);
       }
+
       var query = connection.query(
         "SELECT ?? FROM ??",
         [ItemAdmin.COLUMNS_ADMIN, "item_list"],
@@ -66,7 +67,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
 
           for (var i in rows) {
             var currItem = rows[i];
-             items.push(new ItemAdmin(currItem));
+            items.push(new ItemAdmin(currItem));
           }
 
           callback(null, items);
