@@ -3,6 +3,7 @@ import express = require("express");
 import mysql = require("mysql");
 import controllerList = require("./controllers/index");
 import utils = require("mykoop-utils");
+import async = require("async");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 import ItemAdmin = require("./classes/ItemAdmin");
@@ -113,20 +114,39 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
       code: data.code,
       threshold: data.threshold
     };
-    logger.verbose("adding new item", queryData);
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(err);
       }
-
-      var query = connection.query(
-        "INSERT INTO item SET ?",
-        [queryData],
-        function(err) {
-          // We cleanup already because we don't need the connection anymore.
-          cleanup();
-          callback(err);
-      });
+      async.waterfall([
+        function(callback) {
+          logger.verbose("adding new item", queryData);
+          connection.query(
+            "INSERT INTO item SET ?",
+            [queryData],
+            function(err, result) {
+              callback(err, result ? result.insertId : null);
+            }
+          );
+        },
+        function(id, callback) {
+          var inventoryField = {
+            idItem: id,
+            quantityStock: 0,
+            quantityReserved: 0
+          }
+          connection.query(
+            "INSERT INTO inventory SET ?",
+            [inventoryField],
+            function(err) {
+              callback(err);
+            }
+          );
+        }
+      ], function(err) {
+        cleanup();
+        callback(err);
+      })
     });
   }
 }

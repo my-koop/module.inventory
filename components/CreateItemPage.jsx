@@ -12,7 +12,7 @@ var actions  = require("actions");
 var __ = require("language").__;
 
 var MKItemEditForm = require("./ItemEditForm");
-var t = 0;
+
 var CreateItemPage = React.createClass({
 
   getInitialState: function() {
@@ -31,7 +31,9 @@ var CreateItemPage = React.createClass({
   },
 
   onFinish: function() {
-    reactRouter.transitionTo(routeData.dashboard.children.inventory.children.items.name);
+    reactRouter.transitionTo(
+      routeData.dashboard.children.inventory.children.items.name
+    );
   },
 
   onSave: function() {
@@ -66,7 +68,7 @@ var CreateItemPage = React.createClass({
           <BSAlert bsStyle="success">
             {this.state.success}
           </BSAlert>
-          <BSButtonGroup className="pull-right">
+          <div className="pull-right">
             <BSButton
               onClick={this.onContinue}
               bsStyle="success"
@@ -79,9 +81,8 @@ var CreateItemPage = React.createClass({
             >
               {__("finish")}
             </BSButton>
-          </BSButtonGroup>
+          </div>
         </div>
-
       );
     } else {
       body = (
@@ -91,7 +92,7 @@ var CreateItemPage = React.createClass({
               {this.state.errorMessage}
             </BSAlert>
           : null}
-          <MKItemEditForm item={this.state.item} ref="itemForm"/>
+          <MKItemEditForm item={this.state.item} ref="itemForm" />
           <BSButton
             onClick={this.onSave}
             className="pull-right"
