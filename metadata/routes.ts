@@ -1,13 +1,12 @@
 import utils = require("mykoop-utils");
 export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
-  /*FIXME: Remove from core when done here.
   metaDataBuilder.addFrontendRoute({
-    idPath: ["dashboard", "inventory"],
-    component: "ParentPlaceHolder",
-    path: "inventory",
-    default: "ItemsPage"
+    idPath: ["dashboard", "inventory", "createItem"],
+    component: "CreateItemPage",
+    name: "createItemPage",
+    path: "create",
   });
-  */
+
 
   metaDataBuilder.addFrontendRoute({
     idPath: ["dashboard", "inventory", "items"],

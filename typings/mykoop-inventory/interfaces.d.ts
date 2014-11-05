@@ -10,4 +10,11 @@ declare module InventoryInterfaces {
     threshold: number;
   }
 
+  export interface AddItemData {
+    code: number;
+    name: string;
+    price: number;
+    threshold: number;
+  }
+
 }

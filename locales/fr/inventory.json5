@@ -5,5 +5,11 @@
   code: "Code",
   price: "Prix",
   threshold: "Seuil minimal",
-  removedItemMessage: "Vous avez effacé l'article"
+  removedItemMessage: "Vous avez effacé l'article",
+
+  inventoryWelcome: "Inventaire",
+  createItemWelcome: "Page de création d'article",
+  newItem: "ajouter article",
+  item_new_failed: "Échec d'ajout de l'article",
+  item_new_success: "Ajout de l'article réussi",
 }

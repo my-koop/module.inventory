@@ -22,6 +22,10 @@ declare module mkinventory {
       idItem : Number,
       callback: (err: Error, result: Item[]) => void
     );
+    addItem(
+      updateData: InventoryInterfaces.AddItemData,
+      callback: (err: Error) => void
+    );
   }
 
   export interface ItemAdmin extends Item {

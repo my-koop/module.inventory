@@ -4,8 +4,10 @@ var BSModal  = require("react-bootstrap/Modal");
 var BSInput  = require("react-bootstrap/Input");
 var BSAlert  = require("react-bootstrap/Alert");
 
-var actions     = require("actions");
-var __          = require("language").__;
+var actions  = require("actions");
+var __ = require("language").__;
+var _  = require("lodash");
+var MKItemEditForm = require("./ItemEditForm");
 
 //TODO AbstractModal
 var ItemEditModal = React.createClass({
@@ -16,36 +18,21 @@ var ItemEditModal = React.createClass({
   propTypes: {
     item: React.PropTypes.shape({
       id: React.PropTypes.number.isRequired,
-      code: React.PropTypes.number.isRequired,
       name: React.PropTypes.string.isRequired,
-      price: React.PropTypes.number.isRequired,
-      threshold: React.PropTypes.number.isRequired
     }).isRequired
   },
 
   getInitialState: function() {
-    // making a copy of item props because keeping this.props.item
-    // was keeping a pointer to item, therefore modifying it when modifying
-    // the state
     return {
-      name: this.props.item.name,
-      code: this.props.item.code,
-      price: this.props.item.price,
-      threshold: this.props.item.threshold,
       errorMessage: null
     }
   },
 
   onSave: function (hideFnc) {
     var self = this;
+    var data = _.merge(this.refs.itemForm.getItem(), {id: this.props.item.id});
     actions.inventory.item.update({
-      data: {
-        id: self.props.item.id,
-        name: self.state.name,
-        code: parseInt(self.state.code),
-        price: parseFloat(self.state.price),
-        threshold: parseInt(self.state.threshold)
-      }
+      data: data
     }, function (err, res) {
       if (err) {
         console.error(err);
@@ -62,7 +49,7 @@ var ItemEditModal = React.createClass({
   },
 
   render: function () {
-    var item = this.props.item;
+    var item = _.omit(this.props.item, 'id');
     var self = this;
     return this.transferPropsTo(
       <BSModal
@@ -76,26 +63,7 @@ var ItemEditModal = React.createClass({
               {this.state.errorMessage}
             </BSAlert>
           : null}
-          <BSInput
-            type="number"
-            label={__("inventory::code")}
-            valueLink={self.linkState("code")}
-          />
-          <BSInput
-            type="text"
-            label={__("inventory::itemname")}
-            valueLink={self.linkState("name")}
-          />
-          <BSInput
-            type="number"
-            label={__("inventory::price")}
-            valueLink={self.linkState("price")}
-          />
-          <BSInput
-            type="number"
-            label={__("inventory::threshold")}
-            valueLink={self.linkState("threshold")}
-          />
+          <MKItemEditForm item={item} ref="itemForm" />
         </div>
         <div className="modal-footer">
           <BSButton

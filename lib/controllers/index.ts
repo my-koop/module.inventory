@@ -1,11 +1,12 @@
 import metaData = require("../../metadata/index");
 
 // Controllers.
-import itemsData = require ("./itemsData");
-import updateItem = require ("./updateItem");
-import deleteItem = require ("./deleteItem");
-import itemsBelowThresholdData = require ("./itemsBelowThresholdData");
-import validation  = require("../validation/index");
+import itemsData                = require ("./itemsData");
+import updateItem               = require ("./updateItem");
+import deleteItem               = require ("./deleteItem");
+import itemsBelowThresholdData  = require ("./itemsBelowThresholdData");
+import validation               = require("../validation/index");
+import addItem                  = require ("./addItem");
 
 var endPoints = metaData.endpoints;
 
@@ -31,5 +32,10 @@ export function attachControllers(inventoryModuleControllers) {
   inventoryModuleControllers.attach(
     {endPoint: endPoints.inventory.listbelowthreshold},
     itemsBelowThresholdData
+  );
+
+  inventoryModuleControllers.attach(
+    {endPoint: endPoints.inventory.item.add},
+    addItem
   );
 }
