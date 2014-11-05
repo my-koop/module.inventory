@@ -5,5 +5,12 @@
   code: "Code",
   price: "Price",
   threshold : "Minimal quantity",
-  removedItemMessage: "You deleted the item"
+  removedItemMessage: "You deleted the item",
+
+
+  inventoryWelcome: "Inventory",
+  createItemWelcome: "Item creation page",
+  newItem: "add item",
+  item_new_failed: "Failed to create new item",
+  item_new_success: "Succesfully added new item",
 }

@@ -13,6 +13,9 @@
     },
     "lodash/lodash.d.ts": {
       "commit": "7be40b2a8aca2288fe7011cd24959718756a5664"
+    },
+    "async/async.d.ts": {
+      "commit": "5e8ac2341f100202415ff39d8f79875b439ac677"
     }
   }
 }

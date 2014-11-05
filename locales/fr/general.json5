@@ -3,4 +3,6 @@
   cancel: "Annuler",
   save: "Enregistrer",
   saveAndClose: "Enregistrer et fermer",
+  continue: "continuer",
+  finish: "terminer",
 }
