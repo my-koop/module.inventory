@@ -7,6 +7,7 @@ declare module InventoryInterfaces {
     code: number;
     name: string;
     price: number;
+    threshold: number;
   }
 
 }

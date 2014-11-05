@@ -5,6 +5,7 @@ declare module InventoryDbQueryStruct {
     code: number;
     name: string;
     price: number;
+    threshold: number;
   }
 }
 
