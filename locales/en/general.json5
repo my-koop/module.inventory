@@ -3,4 +3,6 @@
   cancel: "Cancel",
   save: "Save",
   saveAndClose: "Save and Close",
+  continue: "continue",
+  finish: "finish",
 }

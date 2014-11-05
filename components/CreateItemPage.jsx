@@ -19,7 +19,7 @@ var CreateItemPage = React.createClass({
     return {
       item: {},
       errorMessage: null,
-      success: "null"
+      success: null
     }
   },
 
@@ -37,6 +37,10 @@ var CreateItemPage = React.createClass({
   onSave: function() {
     var self = this;
     var item = this.refs.itemForm.getItem();
+    this.setState({
+      item: item
+    });
+
     actions.inventory.item.add({
       data: item
     }, function(err, body) {
@@ -102,7 +106,7 @@ var CreateItemPage = React.createClass({
     return (
       <div>
         <h1>
-          __("inventory::createItemWelcome")
+          {__("inventory::createItemWelcome")}
         </h1>
         <BSCol md={4}>
           {body}

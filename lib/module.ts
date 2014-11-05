@@ -84,7 +84,6 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     });
   }
 
-
   deleteItem(id: Number, callback: (err?: Error) => void) {
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
@@ -102,6 +101,31 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           }
 
           callback();
+      });
+    });
+  }
+
+  addItem(data: InventoryInterfaces.AddItemData, callback: (err?: Error) => void) {
+
+    var queryData: InventoryDbQueryStruct.ItemData = {
+      name: data.name,
+      price: data.price,
+      code: data.code,
+      threshold: data.threshold
+    };
+    logger.verbose("adding new item", queryData);
+    this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err);
+      }
+
+      var query = connection.query(
+        "INSERT INTO item SET ?",
+        [queryData],
+        function(err) {
+          // We cleanup already because we don't need the connection anymore.
+          cleanup();
+          callback(err);
       });
     });
   }
