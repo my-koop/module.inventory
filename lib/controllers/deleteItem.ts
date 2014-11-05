@@ -1,5 +1,4 @@
 import express = require("express");
-import Item = require("../classes/Item");
 import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 
