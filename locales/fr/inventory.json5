@@ -4,5 +4,5 @@
   itemname: "Nom de l'article",
   code: "Code",
   price: "Prix",
-  removedItemMessage: "Vous avez effacé l'item"
+  removedItemMessage: "Vous avez effacé l'article"
 }
