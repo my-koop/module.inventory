@@ -4,5 +4,6 @@
   itemname: "Item name",
   code: "Code",
   price: "Price",
-  threshold : "Minimal quantity"
+  threshold : "Minimal quantity",
+  removedItemMessage: "You deleted the item"
 }
