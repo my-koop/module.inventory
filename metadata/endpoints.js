@@ -4,6 +4,10 @@ var endpoints = {
             path: "/inventory/list",
             method: "get"
         },
+        listbelowthreshold: {
+            path: "/inventory/listbelowthreshold",
+            method: "get"
+        },
         item: {
             update: {
                 path: "/inventory/item/:id",

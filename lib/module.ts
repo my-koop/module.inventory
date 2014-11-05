@@ -47,6 +47,33 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     });
   }
 
+  getItemsBelowThresholdData(callback: (err: Error, result?: ItemAdmin[]) => void) {
+    var items = [];
+
+    this.db.getConnection(function(err, connection, cleanup) {
+      if(err) {
+        return callback(err);
+      }
+      var query = connection.query(
+        "SELECT ?? FROM ?? where quantityStock < threshold",
+        [ItemAdmin.COLUMNS_ADMIN, "item_list"],
+        function(err, rows) {
+          cleanup();
+
+          if (err) {
+            return callback(err);
+          }
+
+          for (var i in rows) {
+            var currItem = rows[i];
+             items.push(new ItemAdmin(currItem));
+          }
+
+          callback(null, items);
+      });
+    });
+  }
+
   updateItem(data: InventoryInterfaces.UpdateItemData, callback: (err?: Error) => void) {
 
     var validationErrors = validation.updateItem(data);
