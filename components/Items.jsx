@@ -106,10 +106,10 @@ var Items = React.createClass({
       }
     };
 
+    //Fixme : Add default value for headerRepeat in TableSorter
     return (
       <BSCol md={12}>
         <div>
-          //Fixme : Add default value for headerRepeat in TableSorter
           <MKTableSorter
             config={CONFIG}
             items={this.state.items}
