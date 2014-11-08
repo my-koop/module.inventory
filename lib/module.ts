@@ -8,7 +8,8 @@ import getLogger = require("mykoop-logger");
 var logger = getLogger(module);
 import ItemAdmin = require("./classes/ItemAdmin");
 import ItemPublic = require("./classes/ItemPublic");
-import validation = require("./validation/index");
+
+var DatabaseError = utils.errors.DatabaseError;
 
 class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   private db: mkdatabase.Module;
@@ -25,7 +26,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
 
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
-        return callback(err);
+        return callback(new DatabaseError(err));
       }
 
       var query = connection.query(
@@ -36,7 +37,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           cleanup();
 
           if (err) {
-            return callback(err);
+            return callback(new DatabaseError(err));
           }
 
           for (var i in rows) {
@@ -54,7 +55,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
 
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
-        return callback(err);
+        return callback(new DatabaseError(err));
       }
       var query = connection.query(
         "SELECT ?? FROM ?? where quantityStock < threshold",
@@ -63,7 +64,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           cleanup();
 
           if (err) {
-            return callback(err);
+            return callback(new DatabaseError(err));
           }
 
           for (var i in rows) {
@@ -77,13 +78,6 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   }
 
   updateItem(data: InventoryInterfaces.UpdateItemData, callback: (err?: Error) => void) {
-
-    var validationErrors = validation.updateItem(data);
-    if (validationErrors) {
-      logger.error(validationErrors);
-      return callback(new Error("Invalid data"));
-    }
-
     var queryData: InventoryDbQueryStruct.ItemData = {
       name: data.name,
       price: data.price,
@@ -94,7 +88,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
 
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
-        return callback(err);
+        return callback(new DatabaseError(err));
       }
 
       var query = connection.query(
@@ -105,7 +99,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           cleanup();
 
           if (err) {
-            return callback(err);
+            return callback(new DatabaseError(err));
           }
           // TODO:: Return updated item data
           callback();
@@ -116,7 +110,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   deleteItem(id: Number, callback: (err?: Error) => void) {
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
-        return callback(err);
+        return callback(new DatabaseError(err));
       }
       var query = connection.query(
         "DELETE from item WHERE idItem = ?",
@@ -126,7 +120,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
           cleanup();
 
           if (err) {
-            return callback(err);
+            return callback(new DatabaseError(err));
           }
 
           callback();
@@ -144,7 +138,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     };
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
-        return callback(err);
+        return callback(new DatabaseError(err));
       }
       async.waterfall([
         function(callback) {
@@ -153,7 +147,10 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
             "INSERT INTO item SET ?",
             [queryData],
             function(err, result) {
-              callback(err, result ? result.insertId : null);
+              callback(
+                !err || new DatabaseError(err),
+                result ? result.insertId : null
+              );
             }
           );
         },
@@ -167,7 +164,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
             "INSERT INTO inventory SET ?",
             [inventoryField],
             function(err) {
-              callback(err);
+              callback(!err || new DatabaseError(err));
             }
           );
         }
