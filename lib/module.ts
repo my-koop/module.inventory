@@ -148,7 +148,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
             [queryData],
             function(err, result) {
               callback(
-                !err || new DatabaseError(err),
+                err && new DatabaseError(err),
                 result ? result.insertId : null
               );
             }
@@ -164,7 +164,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
             "INSERT INTO inventory SET ?",
             [inventoryField],
             function(err) {
-              callback(!err || new DatabaseError(err));
+              callback(err && new DatabaseError(err));
             }
           );
         }
