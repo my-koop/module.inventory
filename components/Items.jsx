@@ -42,8 +42,8 @@ var Items = React.createClass({
         modalTrigger: <MKItemEditModal item={item} />
       },
       {
-        icon: "remove",
-        warningMessage: __("general::areYouSure"),
+        icon: "trash",
+        warningMessage: __("areYouSure"),
         tooltip: {
           text: __("general::remove"),
           overlayProps: {
@@ -80,7 +80,7 @@ var Items = React.createClass({
           name: __("inventory::id"),
         },
         name: {
-          name: __("inventory::name"),
+          name: __("name"),
         },
         quantityStock: {
           name: __("inventory::quantityStock"),
@@ -92,7 +92,7 @@ var Items = React.createClass({
           name: __("inventory::code"),
         },
         actions: {
-          name: __("inventory::actions"),
+          name: __("actions"),
           isStatic: true,
           cellGenerator: function(item) {
             return (
@@ -106,7 +106,6 @@ var Items = React.createClass({
       }
     };
 
-    //Fixme : Add default value for headerRepeat in TableSorter
     return (
       <BSCol md={12}>
         <div>
