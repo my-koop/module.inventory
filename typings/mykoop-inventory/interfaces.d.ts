@@ -8,6 +8,7 @@ declare module InventoryInterfaces {
     name: string;
     price: number;
     threshold: number;
+    quantityStock: number;
   }
 
   export interface AddItemData {

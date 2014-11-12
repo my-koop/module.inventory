@@ -10,6 +10,7 @@
   quantityReserved: "Quantity reserved",
   id: "Id",
   editItem: "Edit item",
+  saveItem: "Save item",
 
   inventoryWelcome: "Inventory",
   createItemWelcome: "Item creation page",

@@ -1,6 +1,7 @@
 var React             = require("react");
 var BSCol             = require("react-bootstrap/Col");
 var BSButton          = require("react-bootstrap/Button");
+var BSInput           = require("react-bootstrap/Input");
 var BSModalTrigger    = require("react-bootstrap/ModalTrigger");
 var MKIcon            = require("mykoop-core/components/Icon");
 var MKTableSorter     = require("mykoop-core/components/TableSorter");
@@ -29,18 +30,9 @@ var Items = React.createClass({
     });
   },
 
-  actionsGenerator: function(item) {
-    return [
-      {
-        icon: "edit",
-        tooltip: {
-          text: __("inventory::editItem"),
-          overlayProps: {
-            placement: "top"
-          }
-        },
-        modalTrigger: <MKItemEditModal item={item} />
-      },
+  actionsGenerator: function(item, i) {
+    var self = this;
+    var buttonDefinitions = [
       {
         icon: "trash",
         warningMessage: __("areYouSure"),
@@ -68,18 +60,86 @@ var Items = React.createClass({
         }
       }
     ];
+    if(!item.editing) {
+      buttonDefinitions.unshift({
+        icon: "edit",
+        tooltip: {
+          text: __("inventory::editItem"),
+          overlayProps: {
+            placement: "top"
+          }
+        },
+        callback: function() {
+          item.editing = true;
+          self.state.items[i] = item;
+          self.setState({
+            items: self.state.items
+          });
+        }
+      });
+    } else {
+      buttonDefinitions.unshift({
+        icon: "save",
+        tooltip: {
+          text: __("inventory::saveItem"),
+          overlayProps: {
+            placement: "top"
+          }
+        },
+        callback: function() {
+          actions.inventory.item.update({
+            data: item
+          }, function (err, res) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            item.editing = false;
+            self.state.items[i] = item;
+            self.setState({
+              items: self.state.items
+            });
+          });
+        }
+      });
+    }
+
+    return buttonDefinitions;
   },
 
   render: function() {
     var self = this;
 
+    function makeNumberItemInput(field) {
+      return function(item, i) {
+        if(item.editing) {
+          var valueLink = {
+            value: item[field],
+            requestChange: function(newValue) {
+              newValue = parseInt(newValue);
+              if(newValue < 0) {
+                newValue = 0;
+              }
+              self.state.items[i][field] = newValue;
+              self.setState({
+                items: self.state.items
+              });
+            }
+          }
+          return <BSInput type="number" valueLink={valueLink} />
+        }
+        return item[field];
+      }
+    }
+
     // TableSorter Config
     var CONFIG = {
       defaultOrdering: [
         "id",
+        "code",
         "name",
         "quantityStock",
-        "code",
+        "threshold",
         "actions"
       ],
       columns: {
@@ -88,24 +148,45 @@ var Items = React.createClass({
         },
         name: {
           name: __("name"),
+          cellGenerator: function(item, i) {
+            if(item.editing) {
+              var valueLink = {
+                value: item.name,
+                requestChange: function(newName) {
+                  self.state.items[i].name = newName;
+                  self.setState({
+                    items: self.state.items
+                  });
+                }
+              }
+              return <BSInput type="text" valueLink={valueLink} />
+            }
+            return item.name;
+          }
         },
         quantityStock: {
           name: __("inventory::quantityStock"),
+          cellGenerator: makeNumberItemInput("quantityStock")
         },
         quantityReserved: {
           name: __("inventory::quantityReserved"),
         },
         code: {
           name: __("inventory::code"),
+          cellGenerator: makeNumberItemInput("code")
+        },
+        threshold: {
+          name: __("inventory::threshold"),
+          cellGenerator: makeNumberItemInput("threshold")
         },
         actions: {
           name: __("actions"),
           isStatic: true,
-          cellGenerator: function(item) {
+          cellGenerator: function(item, i) {
             return (
               <MKListModButtons
                 defaultTooltipDelay={500}
-                buttons={self.actionsGenerator(item)}
+                buttons={self.actionsGenerator(item, i)}
               />
             );
           }

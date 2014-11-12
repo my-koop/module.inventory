@@ -85,24 +85,51 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
       threshold: data.threshold
     };
     var id = data.id;
-
+    var inventoryQuery = {
+      quantityStock: data.quantityStock
+    };
     this.db.getConnection(function(err, connection, cleanup) {
       if(err) {
         return callback(new DatabaseError(err));
       }
-
-      var query = connection.query(
-        "UPDATE item SET ? WHERE idItem = ?",
-        [queryData, id],
-        function(err) {
-          // We cleanup already because we don't need the connection anymore.
-          cleanup();
-
-          if (err) {
-            return callback(new DatabaseError(err));
-          }
-          // TODO:: Return updated item data
-          callback();
+      async.waterfall([
+        function(callback) {
+          connection.beginTransaction(function(err) {
+            callback(err && new DatabaseError(err));
+          });
+        },
+        function(callback) {
+          connection.query(
+            "UPDATE item SET ? WHERE idItem = ?",
+            [queryData, id],
+            function(err) {
+              callback(err && new DatabaseError(err));
+          });
+        },
+        function(callback) {
+          connection.query(
+            "UPDATE inventory SET ? WHERE idItem = ?",
+            [inventoryQuery, id],
+            function(err) {
+              callback(err && new DatabaseError(err));
+          });
+        },
+        function(callback) {
+          connection.commit(function(err) {
+            callback(err && new DatabaseError(err));
+          });
+        },
+      ], function(err) {
+        if(err) {
+          connection.rollback(function() {
+            cleanup();
+            callback(err);
+          });
+          return;
+        }
+        cleanup();
+        // TODO:: Return updated item data
+        callback(err);
       });
     });
   }

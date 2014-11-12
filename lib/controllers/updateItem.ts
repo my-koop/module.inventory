@@ -10,7 +10,8 @@ function updateItem(req: express.Request, res: express.Response) {
     name: req.param("name"),
     code: parseInt(req.param("code")),
     price: parseFloat(req.param("price")),
-    threshold: parseInt(req.param("threshold"))
+    threshold: parseInt(req.param("threshold")),
+    quantityStock: parseInt(req.param("quantityStock"))
   }
 
   self.updateItem(data, function(err) {
