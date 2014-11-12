@@ -75,6 +75,13 @@ var Items = React.createClass({
 
     // TableSorter Config
     var CONFIG = {
+      defaultOrdering: [
+        "id",
+        "name",
+        "quantityStock",
+        "code",
+        "actions"
+      ],
       columns: {
         id: {
           name: __("inventory::id"),

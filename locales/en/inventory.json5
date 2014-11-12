@@ -6,7 +6,10 @@
   price: "Price",
   threshold : "Minimal quantity",
   removedItemMessage: "You deleted the item",
-
+  quantityStock: "Quantity", // FIXME::To change if quantityReserved is kept
+  quantityReserved: "Quantity reserved",
+  id: "Id",
+  editItem: "Edit item",
 
   inventoryWelcome: "Inventory",
   createItemWelcome: "Item creation page",
