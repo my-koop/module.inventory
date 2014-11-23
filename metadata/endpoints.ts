@@ -1,7 +1,7 @@
 var endpoints = {
   inventory: {
     list: {
-      path: "/inventory/list",
+      path: "/inventory/items",
       method: "get"
     },
     listbelowthreshold: {
@@ -10,7 +10,7 @@ var endpoints = {
     },
     item: {
       update: {
-        path: "/inventory/item/:id",
+        path: "/inventory/items/:id",
         method: "put",
         validation: {
           resolve: "validation",
@@ -18,15 +18,11 @@ var endpoints = {
         }
       },
       add: {
-        path: "/inventory/item",
+        path: "/inventory/items",
         method: "post"
       },
-      get: {
-        path: "/inventory/item/:id",
-        method: "get"
-      },
       remove: {
-        path: "/inventory/item/:id",
+        path: "/inventory/items/:id",
         method: "delete"
       }
     }

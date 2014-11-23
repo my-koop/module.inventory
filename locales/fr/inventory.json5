@@ -6,8 +6,7 @@
   price: "Prix",
   threshold: "Seuil minimal",
   removedItemMessage: "Vous avez effacé l'article",
-  quantityStock: "Quantité", // FIXME::To change if quantityReserved is kept
-  quantityReserved: "Quantité réservée",
+  quantity: "Quantité",
   id: "Id",
   editItem: "Modifier l'article",
   saveItem: "Enregistrer item",

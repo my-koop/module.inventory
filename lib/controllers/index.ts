@@ -1,41 +1,66 @@
-import metaData = require("../../metadata/index");
+import endpoints = require("../../metadata/endpoints");
+import Express = require("express");
+import utils = require("mykoop-utils");
+import validation = require("../validation/index");
 
-// Controllers.
-import itemsData                = require ("./itemsData");
-import updateItem               = require ("./updateItem");
-import deleteItem               = require ("./deleteItem");
-import itemsBelowThresholdData  = require ("./itemsBelowThresholdData");
-import validation               = require("../validation/index");
-import addItem                  = require ("./addItem");
+function readBaseItemData(req) : any {
+  return {
+    code: req.param("code") || null,
+    name: req.param("name") || null,
+    section: req.param("section") || null,
+    description: req.param("description") || null,
+    price: parseFloat(req.param("price")) || 0,
+    quantity: parseInt(req.param("quantity")) || 0,
+    threshold: parseInt(req.param("threshold")) || 0
+  };
+}
 
-var endPoints = metaData.endpoints;
-
-export function attachControllers(inventoryModuleControllers) {
-  inventoryModuleControllers.attach(
-    {endPoint: endPoints.inventory.list},
-    itemsData
+export function attachControllers(
+  binder: utils.ModuleControllersBinder<mkinventory.Module>
+) {
+  var inventory = binder.moduleInstance;
+  binder.attach(
+    {endPoint: endpoints.inventory.list},
+    binder.makeSimpleController(inventory.getItems)
   );
 
-  inventoryModuleControllers.attach(
+  binder.attach(
+    {endPoint: endpoints.inventory.listbelowthreshold},
+    binder.makeSimpleController(inventory.getItemsBelowThreshold)
+  );
+
+  binder.attach(
     {
-      endPoint: endPoints.inventory.item.update,
+      endPoint: endpoints.inventory.item.update,
       validation: validation.updateItem
     },
-    updateItem
+    binder.makeSimpleController<mkinventory.UpdateItem.Params>(
+      inventory.updateItem,
+      function(req: Express.Request) {
+        var params = readBaseItemData(req);
+        params.id = parseInt(req.param("id"))
+        return params;
+      }
+    )
   );
 
-  inventoryModuleControllers.attach(
-    {endPoint: endPoints.inventory.item.remove},
-    deleteItem
+  binder.attach(
+    {endPoint: endpoints.inventory.item.remove},
+    binder.makeSimpleController<mkinventory.DeleteItem.Params>(
+      binder.moduleInstance.deleteItem,
+      function(req: Express.Request) {
+        return {
+          id: parseInt(req.param("id")),
+        };
+      }
+    )
   );
 
-  inventoryModuleControllers.attach(
-    {endPoint: endPoints.inventory.listbelowthreshold},
-    itemsBelowThresholdData
-  );
-
-  inventoryModuleControllers.attach(
-    {endPoint: endPoints.inventory.item.add},
-    addItem
+  binder.attach(
+    {endPoint: endpoints.inventory.item.add},
+    binder.makeSimpleController<mkinventory.AddItem.Params>(
+      inventory.addItem,
+      readBaseItemData
+    )
   );
 }
