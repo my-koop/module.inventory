@@ -1,7 +1,7 @@
 var React = require("react");
 
-var BSCol          = require("react-bootstrap/Col");
-var BSInput        = require("react-bootstrap/Input");
+var BSCol   = require("react-bootstrap/Col");
+var BSInput = require("react-bootstrap/Input");
 
 var MKIcon           = require("mykoop-core/components/Icon");
 var MKTableSorter    = require("mykoop-core/components/TableSorter");

@@ -5,13 +5,13 @@ import validation = require("../validation/index");
 
 function readBaseItemData(req) : any {
   return {
-    code: req.param("code") || null,
-    name: req.param("name") || null,
-    section: req.param("section") || null,
-    description: req.param("description") || null,
-    price: parseFloat(req.param("price")) || 0,
-    quantity: parseInt(req.param("quantity")) || 0,
-    threshold: parseInt(req.param("threshold")) || 0
+    code: req.param("code", null),
+    name: req.param("name", null),
+    section: req.param("section", null),
+    description: req.param("description", null),
+    price: parseFloat(req.param("price", 0)),
+    quantity: parseInt(req.param("quantity", 0)),
+    threshold: parseInt(req.param("threshold", 0))
   };
 }
 
