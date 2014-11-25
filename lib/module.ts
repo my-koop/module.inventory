@@ -1,13 +1,7 @@
-import path = require("path");
-import express = require("express");
-import mysql = require("mysql");
 import controllerList = require("./controllers/index");
 import utils = require("mykoop-utils");
-import async = require("async");
-import getLogger = require("mykoop-logger");
-var logger = getLogger(module);
-import ItemAdmin = require("./classes/ItemAdmin");
-import ItemPublic = require("./classes/ItemPublic");
+import Item = require("./classes/Item");
+import _ = require("lodash");
 
 var DatabaseError = utils.errors.DatabaseError;
 
@@ -16,190 +10,137 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
 
   init() {
     var self = this;
-
     this.db = <mkdatabase.Module>this.getModuleManager().get("database");
     controllerList.attachControllers(new utils.ModuleControllersBinder(this));
   }
 
-  getItemsData(callback: (err: Error, result?: ItemAdmin[]) => void) {
-    var items = [];
+  getItems (
+    params: mkinventory.GetItems.Params,
+    callback: mkinventory.GetItems.Callback
+  ) {
+    this.callWithConnection(
+      this.__getItems,
+      params,
+      callback
+    )
+  }
 
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(new DatabaseError(err));
+  __getItems (
+    connection: mysql.IConnection,
+    params: mkinventory.GetItems.Params,
+    callback: mkinventory.GetItems.Callback
+  ) {
+    var whereCondition = params.selectCondition ?
+      "WHERE " + params.selectCondition : "";
+    connection.query(
+      "SELECT ?? FROM ?? " + whereCondition,
+      [Item.COLUMNS_DB, "item_list"],
+      function(err, rows) {
+        callback(err && new DatabaseError(err), {
+          items: _.map(rows, function(row) {
+            return new Item(row);
+          })
+        });
       }
+    );
+  }
 
-      var query = connection.query(
-        "SELECT ?? FROM ??",
-        [ItemAdmin.COLUMNS_ADMIN, "item_list"],
-        function(err, rows) {
-          // We cleanup already because we don't need the connection anymore.
-          cleanup();
+  getItemsBelowThreshold (
+    params: mkinventory.GetItemsBelowThreshold.Params,
+    callback: mkinventory.GetItemsBelowThreshold.Callback
+  ) {
+    this.callWithConnection(
+      this.__getItems,
+      _.assign(params, {selectCondition: "quantity < threshold"}),
+      callback
+    );
+  }
 
-          if (err) {
-            return callback(new DatabaseError(err));
-          }
+  updateItem (
+    params: mkinventory.UpdateItem.Params,
+    callback: mkinventory.UpdateItem.Callback
+  ) {
+    this.callWithConnection(
+      this.__updateItem,
+      params,
+      callback
+    );
+  }
 
-          for (var i in rows) {
-            var currItem = rows[i];
-             items.push(new ItemAdmin(currItem));
-          }
+  __updateItem (
+    connection: mysql.IConnection,
+    params: mkinventory.UpdateItem.Params,
+    callback: mkinventory.UpdateItem.Callback
+  ) {
+    var data = _.pick(params,
+      // select all columns except id
+      Item.COLUMNS_DB.slice(1)
+    );
 
-          callback(null, items);
-      });
+    connection.query(
+      "UPDATE item SET ? WHERE id = ?",
+      [data, params.id],
+      function(err) {
+        callback(err && new DatabaseError(err));
+      }
+    );
+  }
+
+  deleteItem (
+    params: mkinventory.DeleteItem.Params,
+    callback: mkinventory.DeleteItem.Callback
+  ) {
+    this.callWithConnection(
+      this.__deleteItem,
+      params,
+      callback
+    );
+  }
+
+  __deleteItem (
+    connection: mysql.IConnection,
+    params: mkinventory.DeleteItem.Params,
+    callback: mkinventory.DeleteItem.Callback
+  ) {
+    connection.query(
+      "DELETE from item WHERE id = ?",
+      [params.id],
+      function(err) {
+        callback(err && new DatabaseError(err));
     });
   }
 
-  getItemsBelowThresholdData(callback: (err: Error, result?: ItemAdmin[]) => void) {
-    var items = [];
-
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(new DatabaseError(err));
-      }
-      var query = connection.query(
-        "SELECT ?? FROM ?? where quantityStock < threshold",
-        [ItemAdmin.COLUMNS_ADMIN, "item_list"],
-        function(err, rows) {
-          cleanup();
-
-          if (err) {
-            return callback(new DatabaseError(err));
-          }
-
-          for (var i in rows) {
-            var currItem = rows[i];
-            items.push(new ItemAdmin(currItem));
-          }
-
-          callback(null, items);
-      });
-    });
+  addItem (
+    params: mkinventory.AddItem.Params,
+    callback: mkinventory.AddItem.Callback
+  ) {
+    this.callWithConnection(
+      this.__addItem,
+      params,
+      callback
+    );
   }
 
-  updateItem(data: InventoryInterfaces.UpdateItemData, callback: (err?: Error) => void) {
-    var queryData: InventoryDbQueryStruct.ItemData = {
-      name: data.name,
-      price: data.price,
-      code: data.code,
-      threshold: data.threshold
-    };
-    var id = data.id;
-    var inventoryQuery = {
-      quantityStock: data.quantityStock
-    };
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(new DatabaseError(err));
+  __addItem (
+    connection: mysql.IConnection,
+    params: mkinventory.AddItem.Params,
+    callback: mkinventory.AddItem.Callback
+  ) {
+    var data = _.pick(params,
+      // select all columns except id
+      Item.COLUMNS_DB.slice(1)
+    );
+
+    connection.query(
+      "INSERT INTO item SET ?",
+      [data],
+      function(err, result) {
+        callback(
+          err && new DatabaseError(err),
+          { id: result ? result.insertId : null }
+        );
       }
-      async.waterfall([
-        function(callback) {
-          connection.beginTransaction(function(err) {
-            callback(err && new DatabaseError(err));
-          });
-        },
-        function(callback) {
-          connection.query(
-            "UPDATE item SET ? WHERE idItem = ?",
-            [queryData, id],
-            function(err) {
-              callback(err && new DatabaseError(err));
-          });
-        },
-        function(callback) {
-          connection.query(
-            "UPDATE inventory SET ? WHERE idItem = ?",
-            [inventoryQuery, id],
-            function(err) {
-              callback(err && new DatabaseError(err));
-          });
-        },
-        function(callback) {
-          connection.commit(function(err) {
-            callback(err && new DatabaseError(err));
-          });
-        },
-      ], function(err) {
-        if(err) {
-          connection.rollback(function() {
-            cleanup();
-            callback(err);
-          });
-          return;
-        }
-        cleanup();
-        // TODO:: Return updated item data
-        callback(err);
-      });
-    });
-  }
-
-  deleteItem(id: Number, callback: (err?: Error) => void) {
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(new DatabaseError(err));
-      }
-      var query = connection.query(
-        "DELETE from item WHERE idItem = ?",
-        [id],
-        function(err) {
-          // We cleanup already because we don't need the connection anymore.
-          cleanup();
-
-          if (err) {
-            return callback(new DatabaseError(err));
-          }
-
-          callback();
-      });
-    });
-  }
-
-  addItem(data: InventoryInterfaces.AddItemData, callback: (err?: Error) => void) {
-
-    var queryData: InventoryDbQueryStruct.ItemData = {
-      name: data.name,
-      price: data.price,
-      code: data.code,
-      threshold: data.threshold
-    };
-    this.db.getConnection(function(err, connection, cleanup) {
-      if(err) {
-        return callback(new DatabaseError(err));
-      }
-      async.waterfall([
-        function(callback) {
-          logger.verbose("adding new item", queryData);
-          connection.query(
-            "INSERT INTO item SET ?",
-            [queryData],
-            function(err, result) {
-              callback(
-                err && new DatabaseError(err),
-                result ? result.insertId : null
-              );
-            }
-          );
-        },
-        function(id, callback) {
-          var inventoryField = {
-            idItem: id,
-            quantityStock: 0,
-            quantityReserved: 0
-          }
-          connection.query(
-            "INSERT INTO inventory SET ?",
-            [inventoryField],
-            function(err) {
-              callback(err && new DatabaseError(err));
-            }
-          );
-        }
-      ], function(err) {
-        cleanup();
-        callback(err);
-      })
-    });
+    );
   }
 }
 

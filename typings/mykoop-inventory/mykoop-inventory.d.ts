@@ -8,41 +8,52 @@
 
 declare module mkinventory {
   export interface Module extends mykoop.IModule{
-    getItemsData(
-      callback: (err: Error, result: Item[]) => void
+    getItems (
+      params: GetItems.Params,
+      callback: GetItems.Callback
     );
-    updateItem(
-      updateData: InventoryInterfaces.UpdateItemData,
-      callback: (err: Error, result: Item[]) => void
+    __getItems (
+      connection: mysql.IConnection,
+      params: GetItems.Params,
+      callback: GetItems.Callback
     );
-    getItemsBelowThresholdData(
-      callback: (err: Error, result: Item[]) => void
+
+    getItemsBelowThreshold (
+      params: GetItemsBelowThreshold.Params,
+      callback: GetItemsBelowThreshold.Callback
     );
-    deleteItem(
-      idItem : Number,
-      callback: (err: Error, result: Item[]) => void
+
+    addItem (
+      params: AddItem.Params,
+      callback: AddItem.Callback
     );
-    addItem(
-      updateData: InventoryInterfaces.AddItemData,
-      callback: (err: Error) => void
+    __addItem (
+      connection: mysql.IConnection,
+      params: AddItem.Params,
+      callback: AddItem.Callback
+    );
+
+    updateItem (
+      params: UpdateItem.Params,
+      callback: UpdateItem.Callback
+    );
+    __updateItem (
+      connection: mysql.IConnection,
+      params: UpdateItem.Params,
+      callback: UpdateItem.Callback
+    );
+
+    deleteItem (
+      params: DeleteItem.Params,
+      callback: DeleteItem.Callback
+    );
+    __deleteItem (
+      connection: mysql.IConnection,
+      params: DeleteItem.Params,
+      callback: DeleteItem.Callback
     );
   }
 
-  export interface ItemAdmin extends Item {
-    quantityStock   : number;
-    quantityReserved: number;
-  }
 
-  export interface ItemPublic extends Item {
-    quantityAvailable: number;
-  }
-
-  export interface Item {
-    id              : number;
-    name            : string;
-    code            : number;
-    price           : number;
-    threshold       : number;
-  }
 }
 

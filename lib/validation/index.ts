@@ -34,7 +34,7 @@ var updateDataConstraint = {
       greaterThanOrEqualTo: 0
     }
   },
-  quantityStock: {
+  quantity: {
     presence: true,
     numericality: {
       onlyInteger: true,

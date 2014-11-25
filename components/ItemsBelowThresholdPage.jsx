@@ -37,8 +37,8 @@ var Items = React.createClass({
         name: {
           name: __("inventory::name"),
         },
-        quantityStock: {
-          name: __("inventory::quantityStock"),
+        quantity: {
+          name: __("inventory::quantity"),
         },
         threshold: {
           name: __("inventory::threshold"),

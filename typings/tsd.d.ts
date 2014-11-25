@@ -7,5 +7,4 @@
 /// <reference path="../node_modules/mykoop-logger/typings/mykoop-logger/mykoop-logger.d.ts" />
 /// <reference path="lodash/lodash.d.ts" />
 /// <reference path="mykoop-inventory/mykoop-inventory.d.ts" />
-/// <reference path="mykoop-inventory/dbQueryStruct.d.ts" />
 /// <reference path="async/async.d.ts" />

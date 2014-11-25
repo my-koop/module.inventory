@@ -1,17 +1,32 @@
 class Item implements mkinventory.Item {
-  public static COLUMNS_DB = ["id", "name", "price", "code", "threshold"];
-  public id              : number;
-  public name            : string;
-  public price           : number;
-  public code            : number;
-  public threshold       : number;
+  public static COLUMNS_DB = [
+    "id",
+    "code",
+    "name",
+    "section",
+    "description",
+    "price",
+    "quantity",
+    "threshold"
+  ];
+  public id         : number;
+  public code       : string;
+  public name       : string;
+  public section    : string;
+  public description: string;
+  public price      : number;
+  public quantity   : number;
+  public threshold  : number;
 
-  constructor(row: any) {
+  constructor(row) {
     this.id     = Number(row.id);
+    this.code   = row.code;
     this.name   = row.name;
-    this.price  = Number(row.price) || 0.00;
-    this.code   = Number(row.code) || 0;
-    this.threshold = Number(row.threshold) || 0;
+    this.section = row.section;
+    this.description = row.description;
+    this.price  = +row.price || 0;
+    this.quantity = +row.quantity || 0;
+    this.threshold = +row.threshold || 0;
   }
 }
 

@@ -1,14 +1,15 @@
-var React             = require("react");
-var BSCol             = require("react-bootstrap/Col");
-var BSButton          = require("react-bootstrap/Button");
-var BSInput           = require("react-bootstrap/Input");
-var BSModalTrigger    = require("react-bootstrap/ModalTrigger");
-var MKIcon            = require("mykoop-core/components/Icon");
-var MKTableSorter     = require("mykoop-core/components/TableSorter");
-var MKListModButtons  = require("mykoop-core/components/ListModButtons");
-var MKItemEditModal   = require("./ItemEditModal");
-var __                = require("language").__;
-var actions           = require("actions");
+var React = require("react");
+
+var BSCol   = require("react-bootstrap/Col");
+var BSInput = require("react-bootstrap/Input");
+
+var MKIcon           = require("mykoop-core/components/Icon");
+var MKTableSorter    = require("mykoop-core/components/TableSorter");
+var MKListModButtons = require("mykoop-core/components/ListModButtons");
+var MKAlertTrigger   = require("mykoop-core/components/AlertTrigger");
+
+var __      = require("language").__;
+var actions = require("actions");
 
 var Items = React.createClass({
   getInitialState: function() {
@@ -54,8 +55,14 @@ var Items = React.createClass({
               console.error(err);
               return;
             }
-
-            alert(__("inventory::removedItemMessage") + ": " + item.name);
+            var items = self.state.items;
+            items.splice(i, 1);
+            self.setState({
+              items: items
+            });
+            MKAlertTrigger.showAlert(
+              __("inventory::removedItemMessage") + ": " + item.name
+            );
           });
         }
       }
@@ -138,7 +145,7 @@ var Items = React.createClass({
         "id",
         "code",
         "name",
-        "quantityStock",
+        "quantity",
         "threshold",
         "actions"
       ],
@@ -164,12 +171,9 @@ var Items = React.createClass({
             return item.name;
           }
         },
-        quantityStock: {
-          name: __("inventory::quantityStock"),
-          cellGenerator: makeNumberItemInput("quantityStock")
-        },
-        quantityReserved: {
-          name: __("inventory::quantityReserved"),
+        quantity: {
+          name: __("inventory::quantity"),
+          cellGenerator: makeNumberItemInput("quantity")
         },
         code: {
           name: __("inventory::code"),
