@@ -42,7 +42,7 @@ var ItemEditForm = React.createClass({
   },
 
   render: function () {
-    var others = _.omit(this.props, 'item');
+    var others = _.omit(this.props, "item");
     return (
       <div {...others} >
         <BSInput

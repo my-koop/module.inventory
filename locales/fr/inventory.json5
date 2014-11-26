@@ -9,6 +9,7 @@
   quantity: "Quantité",
   id: "Id",
   editItem: "Modifier l'article",
+  quickEditItem: "Modification rapide de l'article",
   saveItem: "Enregistrer item",
 
   inventoryWelcome: "Inventaire",

@@ -24,6 +24,7 @@ var Items = React.createClass({
     actions.inventory.list(function (err, res) {
       if (err) {
         console.error(err);
+        MKAlertTrigger.showAlert(__("errors::error", {context: err.context}));
         return;
       }
 
@@ -31,112 +32,156 @@ var Items = React.createClass({
     });
   },
 
+  removeItem: function(item, i) {
+    var self = this;
+    var id = item.id;
+    actions.inventory.item.remove(
+    {
+      i18nErrors: {},
+      data: {
+        id : id
+      }
+    }, function(err, res){
+      if (err) {
+        var i18n = err.i18n[0];
+        MKAlertTrigger.showAlert(__(i18n.key, i18n));
+        return;
+      }
+      var items = self.state.items;
+      items.splice(i, 1);
+      self.setState({
+        items: items
+      });
+      MKAlertTrigger.showAlert(
+        __("inventory::removedItemMessage") + ": " + item.name
+      );
+    });
+  },
+
+  saveItem: function(item, i) {
+    var self = this;
+    actions.inventory.item.update({
+      i18nErrors: {},
+      data: item
+    }, function (err, res) {
+      if (err) {
+        var i18n = err.i18n[0];
+        MKAlertTrigger.showAlert(__(i18n.key, i18n));
+        return;
+      }
+      item.editing = false;
+      self.state.items[i] = item;
+      self.setState({
+        items: self.state.items
+      });
+    });
+  },
+
   actionsGenerator: function(item, i) {
     var self = this;
-    var buttonDefinitions = [
-      {
-        icon: "trash",
-        warningMessage: __("areYouSure"),
-        tooltip: {
-          text: __("general::remove"),
-          overlayProps: {
-            placement: "top"
-          }
-        },
-        callback: function() {
-          var id = item.id;
-          actions.inventory.item.remove(
-          {
-            data: {
-              id : id
-            }
-          }, function(err, res){
-            if (err) {
-              console.error(err);
-              return;
-            }
-            var items = self.state.items;
-            items.splice(i, 1);
-            self.setState({
-              items: items
-            });
-            MKAlertTrigger.showAlert(
-              __("inventory::removedItemMessage") + ": " + item.name
-            );
-          });
-        }
-      }
-    ];
+
     if(!item.editing) {
-      buttonDefinitions.unshift({
-        icon: "edit",
-        tooltip: {
-          text: __("inventory::editItem"),
-          overlayProps: {
-            placement: "top"
-          }
-        },
-        callback: function() {
-          item.editing = true;
-          self.state.items[i] = item;
-          self.setState({
-            items: self.state.items
-          });
-        }
-      });
-    } else {
-      buttonDefinitions.unshift({
-        icon: "save",
-        tooltip: {
-          text: __("inventory::saveItem"),
-          overlayProps: {
-            placement: "top"
-          }
-        },
-        callback: function() {
-          actions.inventory.item.update({
-            data: item
-          }, function (err, res) {
-            if (err) {
-              console.error(err);
-              return;
+      return [
+        // Edit Item
+        {
+          icon: "edit",
+          tooltip: {
+            text: __("inventory::quickEditItem"),
+            overlayProps: {
+              placement: "top"
             }
-            item.editing = false;
+          },
+          callback: function() {
+            var backupItem = _.cloneDeep(item);
+            item.editing = true;
+            item.backup = backupItem;
             self.state.items[i] = item;
             self.setState({
               items: self.state.items
             });
-          });
+          }
+        },
+        // Remove Item
+        {
+          icon: "trash",
+          warningMessage: __("areYouSure"),
+          tooltip: {
+            text: __("general::remove"),
+            overlayProps: {
+              placement: "top"
+            }
+          },
+          callback: _.bind(self.removeItem, self, item, i)
         }
-      });
+      ];
+    } else {
+      return [
+        // Save Item
+        {
+          icon: "save",
+          tooltip: {
+            text: __("inventory::saveItem"),
+            overlayProps: {
+              placement: "top"
+            }
+          },
+          callback: _.bind(self.saveItem, self, item, i)
+        },
+        // Cancel modifications
+        {
+          icon: "close",
+          tooltip: {
+            text: __("cancel"),
+            overlayProps: {
+              placement: "top"
+            }
+          },
+          callback: function() {
+            item = item.backup;
+            self.state.items[i] = item;
+            self.setState({
+              items: self.state.items
+            });
+          }
+        }
+      ];
     }
-
-    return buttonDefinitions;
   },
 
   render: function() {
     var self = this;
 
-    function makeNumberItemInput(field) {
+    function makeEditableField(field, type, parseFunc) {
       return function(item, i) {
         if(item.editing) {
           var valueLink = {
             value: item[field],
             requestChange: function(newValue) {
-              newValue = parseInt(newValue);
-              if(newValue < 0) {
-                newValue = 0;
-              }
-              self.state.items[i][field] = newValue;
+              self.state.items[i][field] = parseFunc(newValue);
               self.setState({
                 items: self.state.items
               });
             }
           }
-          return <BSInput type="number" valueLink={valueLink} />
+          return <BSInput type={type} valueLink={valueLink} />
         }
         return item[field];
       }
+    }
+    function makeTextItemInput(field) {
+      return makeEditableField(field, "text", _.identity);
+    }
+    function makeNumberItemInput(field, min, max) {
+      return makeEditableField(field, "number", function(value) {
+        value = parseInt(value) || 0;
+        if(value < min) {
+          value = min;
+        }
+        if(value > max) {
+          value = max
+        }
+        return value;
+      });
     }
 
     // TableSorter Config
@@ -144,6 +189,7 @@ var Items = React.createClass({
       defaultOrdering: [
         "id",
         "code",
+        "section",
         "name",
         "quantity",
         "threshold",
@@ -151,37 +197,27 @@ var Items = React.createClass({
       ],
       columns: {
         id: {
-          name: __("inventory::id"),
+          name: __("id"),
+        },
+        code: {
+          name: __("code"),
+          cellGenerator: makeNumberItemInput("code", 0)
+        },
+        section: {
+          name: __("inventory::section"),
+          cellGenerator: makeTextItemInput("section")
         },
         name: {
           name: __("name"),
-          cellGenerator: function(item, i) {
-            if(item.editing) {
-              var valueLink = {
-                value: item.name,
-                requestChange: function(newName) {
-                  self.state.items[i].name = newName;
-                  self.setState({
-                    items: self.state.items
-                  });
-                }
-              }
-              return <BSInput type="text" valueLink={valueLink} />
-            }
-            return item.name;
-          }
+          cellGenerator: makeTextItemInput("name")
         },
         quantity: {
-          name: __("inventory::quantity"),
+          name: __("quantity"),
           cellGenerator: makeNumberItemInput("quantity")
-        },
-        code: {
-          name: __("inventory::code"),
-          cellGenerator: makeNumberItemInput("code")
         },
         threshold: {
           name: __("inventory::threshold"),
-          cellGenerator: makeNumberItemInput("threshold")
+          cellGenerator: makeNumberItemInput("threshold", 0)
         },
         actions: {
           name: __("actions"),
@@ -199,18 +235,14 @@ var Items = React.createClass({
     };
 
     return (
-      <BSCol md={12}>
-        <div>
-          <MKTableSorter
-            config={CONFIG}
-            items={this.state.items}
-            striped
-            bordered
-            condensed
-            hover
-          />
-        </div>
-      </BSCol>
+      <MKTableSorter
+        config={CONFIG}
+        items={this.state.items}
+        striped
+        bordered
+        condensed
+        hover
+      />
     );
   }
 });
