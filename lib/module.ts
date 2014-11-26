@@ -4,6 +4,7 @@ import Item = require("./classes/Item");
 import _ = require("lodash");
 
 var DatabaseError = utils.errors.DatabaseError;
+var ApplicationError = utils.errors.ApplicationError;
 
 class InventoryModule extends utils.BaseModule implements mkinventory.Module {
   private db: mkdatabase.Module;
@@ -12,6 +13,39 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     var self = this;
     this.db = <mkdatabase.Module>this.getModuleManager().get("database");
     controllerList.attachControllers(new utils.ModuleControllersBinder(this));
+  }
+
+  getItemInformations (
+    params: mkinventory.GetItemInformations.Params,
+    callback: mkinventory.GetItemInformations.Callback
+  ) {
+    this.callWithConnection(
+      this.__getItemInformations,
+      params,
+      callback
+    );
+  }
+
+  __getItemInformations (
+    connection: mysql.IConnection,
+    params: mkinventory.GetItemInformations.Params,
+    callback: mkinventory.GetItemInformations.Callback
+  ) {
+    connection.query(
+      "SELECT ?? FROM item WHERE id = ?",
+      [Item.COLUMNS_DB, params.id],
+      function(err, rows) {
+        if(err) {
+          return callback(new DatabaseError(err));
+        }
+        if(rows.length !== 1) {
+          return callback(new ApplicationError(null, {id: "notFound"}));
+        }
+        callback(null, {
+          item: new Item(rows[0])
+        });
+      }
+    );
   }
 
   getItems (
@@ -33,8 +67,8 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     var whereCondition = params.selectCondition ?
       "WHERE " + params.selectCondition : "";
     connection.query(
-      "SELECT ?? FROM ?? " + whereCondition,
-      [Item.COLUMNS_DB, "item_list"],
+      "SELECT ?? FROM item " + whereCondition,
+      [Item.COLUMNS_DB],
       function(err, rows) {
         callback(err && new DatabaseError(err), {
           items: _.map(rows, function(row) {

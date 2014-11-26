@@ -1,4 +1,5 @@
 var React = require("react");
+var Router = require("react-router");
 
 var BSCol   = require("react-bootstrap/Col");
 var BSInput = require("react-bootstrap/Input");
@@ -61,7 +62,10 @@ var Items = React.createClass({
   saveItem: function(item, i) {
     var self = this;
     actions.inventory.item.update({
-      i18nErrors: {},
+      i18nErrors: {
+        prefix: "inventory::errors",
+        keys: ["app"]
+      },
       data: item
     }, function (err, res) {
       if (err) {
@@ -101,12 +105,25 @@ var Items = React.createClass({
             });
           }
         },
+        // Item Details
+        {
+          icon: "search-plus",
+          tooltip: {
+            text: __("inventory::editItem"),
+            overlayProps: {
+              placement: "top"
+            }
+          },
+          callback: function() {
+            Router.transitionTo("editItemPage", {id: item.id});
+          }
+        },
         // Remove Item
         {
           icon: "trash",
           warningMessage: __("areYouSure"),
           tooltip: {
-            text: __("general::remove"),
+            text: __("remove"),
             overlayProps: {
               placement: "top"
             }
@@ -201,7 +218,7 @@ var Items = React.createClass({
         },
         code: {
           name: __("code"),
-          cellGenerator: makeNumberItemInput("code", 0)
+          cellGenerator: makeTextItemInput("code")
         },
         section: {
           name: __("inventory::section"),

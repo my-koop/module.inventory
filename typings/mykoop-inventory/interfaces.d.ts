@@ -24,6 +24,14 @@ declare module mkinventory {
       (err?: Error, res?: {items: Item[]}): void;
     }
   }
+  module GetItemInformations {
+    export interface Params {
+      id: number;
+    }
+    export interface Callback {
+      (err?: Error, res?: {item: Item}): void;
+    }
+  }
   module GetItemsBelowThreshold {
     export interface Params {}
     export interface Callback {

@@ -19,20 +19,34 @@ export function attachControllers(
   binder: utils.ModuleControllersBinder<mkinventory.Module>
 ) {
   var inventory = binder.moduleInstance;
+  // List items
   binder.attach(
     {endPoint: endpoints.inventory.list},
     binder.makeSimpleController(inventory.getItems)
   );
 
+  // List items below threshold
   binder.attach(
     {endPoint: endpoints.inventory.listbelowthreshold},
     binder.makeSimpleController(inventory.getItemsBelowThreshold)
   );
 
+  // Get Item informations
+  binder.attach(
+    {endPoint: endpoints.inventory.item.get},
+    binder.makeSimpleController<mkinventory.GetItemInformations.Params>(
+      inventory.getItemInformations, function(req) {
+      return {
+        id: parseInt(req.param("id", 0))
+      }
+    })
+  );
+
+  // Update item
   binder.attach(
     {
       endPoint: endpoints.inventory.item.update,
-      validation: validation.updateItem
+      validation: validation.itemInformation
     },
     binder.makeSimpleController<mkinventory.UpdateItem.Params>(
       inventory.updateItem,
@@ -44,6 +58,7 @@ export function attachControllers(
     )
   );
 
+  // Remove Item
   binder.attach(
     {endPoint: endpoints.inventory.item.remove},
     binder.makeSimpleController<mkinventory.DeleteItem.Params>(
@@ -56,8 +71,12 @@ export function attachControllers(
     )
   );
 
+  // Add item
   binder.attach(
-    {endPoint: endpoints.inventory.item.add},
+    {
+      endPoint: endpoints.inventory.add,
+      validation: validation.itemInformation
+    },
     binder.makeSimpleController<mkinventory.AddItem.Params>(
       inventory.addItem,
       readBaseItemData

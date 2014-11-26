@@ -8,6 +8,16 @@
 
 declare module mkinventory {
   export interface Module extends mykoop.IModule{
+    getItemInformations (
+      params: mkinventory.GetItemInformations.Params,
+      callback: mkinventory.GetItemInformations.Callback
+    );
+    __getItemInformations (
+      connection: mysql.IConnection,
+      params: mkinventory.GetItemInformations.Params,
+      callback: mkinventory.GetItemInformations.Callback
+    );
+
     getItems (
       params: GetItems.Params,
       callback: GetItems.Callback

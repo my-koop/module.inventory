@@ -7,14 +7,44 @@
   threshold : "Minimal quantity",
   removedItemMessage: "You deleted the item",
   quantity: "Quantity",
-  id: "Id",
+  id: "ID",
+  section: "Section",
+  description: "Description",
   editItem: "Edit item",
   quickEditItem: "Quick edit item",
   saveItem: "Save item",
 
   inventoryWelcome: "Inventory",
   createItemWelcome: "Item creation page",
+  editItemWelcome: "Editing item",
   newItem: "add item",
   item_new_failed: "Failed to create new item",
   item_new_success: "Succesfully added new item",
+
+  errors: {
+    app: {
+      id: {
+        notAnInteger: "$t(id) must be an integer",
+        notFound: "ID was not found"
+      },
+      code: {
+        error: "Code must be a positive integer"
+      },
+      name: {
+        tooLong: "$t(name) must be at most __variable__ characters long"
+      },
+      section: {
+        tooLong: "$t(section) must be at most __variable__ characters long"
+      },
+      price: {
+        error: "$t(price) must be a positive integer"
+      },
+      threshold: {
+        error: "$t(threshold) must be a positive integer"
+      },
+      quantity: {
+        error: "$t(quantity) must be a positive integer"
+      }
+    }
+  }
 }

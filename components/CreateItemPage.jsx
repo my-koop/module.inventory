@@ -43,7 +43,11 @@ var CreateItemPage = React.createClass({
       item: item
     });
 
-    actions.inventory.item.add({
+    actions.inventory.add({
+      i18nErrors: {
+        prefix: "inventory::errors",
+        keys: ["app"]
+      },
       data: item
     }, function(err, body) {
       if(err) {
