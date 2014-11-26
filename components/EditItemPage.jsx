@@ -2,7 +2,6 @@ var React = require("react/addons");
 var Router = require("react-router");
 
 var BSButton = require("react-bootstrap/Button");
-var BSButtonGroup = require("react-bootstrap/ButtonGroup");
 var BSCol = require("react-bootstrap/Col");
 
 var actions  = require("actions");

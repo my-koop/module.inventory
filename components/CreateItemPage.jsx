@@ -1,39 +1,34 @@
 var React = require("react/addons");
-var BSButton = require("react-bootstrap/Button");
-var BSButtonGroup = require("react-bootstrap/ButtonGroup");
-var BSCol = require("react-bootstrap/Col");
-var BSAlert = require("react-bootstrap/Alert");
-var BSModal = require("react-bootstrap/Modal");
+var Router = require("react-router");
 
-var reactRouter = require("react-router");
-var routeData = require("dynamic-metadata").routes;
+var BSButton = require("react-bootstrap/Button");
+var BSCol = require("react-bootstrap/Col");
 
 var actions  = require("actions");
 var __ = require("language").__;
 
 var MKItemEditForm = require("./ItemEditForm");
+var MKFeedbacki18nMixin = require("mykoop-core/components/Feedbacki18nMixin");
 
 var CreateItemPage = React.createClass({
+  mixins: [MKFeedbacki18nMixin],
 
   getInitialState: function() {
     return {
       item: {},
-      errorMessage: null,
       success: null
     }
   },
 
   onContinue: function() {
+    this.clearFeedback();
     return this.setState({
-      errorMessage: null,
       success: null
     });
   },
 
   onFinish: function() {
-    reactRouter.transitionTo(
-      routeData.dashboard.children.inventory.children.items.name
-    );
+    Router.transitionTo("items");
   },
 
   onSave: function() {
@@ -43,6 +38,7 @@ var CreateItemPage = React.createClass({
       item: item
     });
 
+    this.clearFeedback();
     actions.inventory.add({
       i18nErrors: {
         prefix: "inventory::errors",
@@ -51,15 +47,11 @@ var CreateItemPage = React.createClass({
       data: item
     }, function(err, body) {
       if(err) {
-        console.error(err);
-        return self.setState({
-          errorMessage: __("inventory::item_new", {context:"failed"}),
-          success: false
-        });
+        return self.setFeedback(err.i18n, "danger");
       }
-      return self.setState({
-        errorMessage: null,
-        success: __("inventory::item_new", {context:"success"})
+      self.setFeedback({key:"inventory::item_new_success"}, "success");
+      self.setState({
+        success: true
       });
     });
   },
@@ -69,9 +61,6 @@ var CreateItemPage = React.createClass({
     if(this.state.success) {
       body = (
         <div>
-          <BSAlert bsStyle="success">
-            {this.state.success}
-          </BSAlert>
           <div className="pull-right">
             <BSButton
               onClick={this.onContinue}
@@ -91,11 +80,6 @@ var CreateItemPage = React.createClass({
     } else {
       body = (
         <div>
-          {this.state.errorMessage ?
-            <BSAlert bsStyle="danger">
-              {this.state.errorMessage}
-            </BSAlert>
-          : null}
           <MKItemEditForm item={this.state.item} ref="itemForm" />
           <BSButton
             onClick={this.onSave}
@@ -114,6 +98,7 @@ var CreateItemPage = React.createClass({
           {__("inventory::createItemWelcome")}
         </h1>
         <BSCol md={4}>
+          {this.renderFeedback()}
           {body}
         </BSCol>
       </div>

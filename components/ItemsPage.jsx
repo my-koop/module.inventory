@@ -10,7 +10,7 @@ var __ = require("language").__;
 
 var ItemsPage = React.createClass({
   goToNewItemPage: function() {
-    Router.transitionTo(getRouteName(["dashboard", "inventory", "createItem"]));
+    Router.transitionTo("createItemPage");
   },
 
   render: function() {

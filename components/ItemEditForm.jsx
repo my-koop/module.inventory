@@ -1,6 +1,5 @@
 var React    = require("react/addons");
 var BSInput  = require("react-bootstrap/Input");
-var BSAlert  = require("react-bootstrap/Alert");
 
 var actions  = require("actions");
 var _  = require("lodash");
@@ -52,9 +51,9 @@ var ItemEditForm = React.createClass({
       section: props.item.section,
       description: props.item.description,
       code: props.item.code,
-      price: props.item.price,
-      quantity: props.item.quantity,
-      threshold: props.item.threshold,
+      price: props.item.price || 0,
+      quantity: props.item.quantity || 0,
+      threshold: props.item.threshold || 0,
     }
   },
 

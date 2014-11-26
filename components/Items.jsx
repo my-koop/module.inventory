@@ -54,7 +54,7 @@ var Items = React.createClass({
         items: items
       });
       MKAlertTrigger.showAlert(
-        __("inventory::removedItemMessage") + ": " + item.name
+        __("inventory::removedItemMessage") + ": " + (item.name || item.id)
       );
     });
   },
