@@ -19,7 +19,7 @@ var ItemsPage = React.createClass({
         <h1 className="pull-left">
           {__("inventory::inventoryWelcome")}
         </h1>
-        <h1 className="pull-right">
+        <div className="pull-right h1">
           <BSButton
             onClick={this.goToNewItemPage}
             bsStyle="success"
@@ -29,7 +29,7 @@ var ItemsPage = React.createClass({
               {__("inventory::newItem")}
             </span>
           </BSButton>
-        </h1>
+        </div>
         <MKItems />
       </div>
     );

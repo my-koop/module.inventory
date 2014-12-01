@@ -35,17 +35,17 @@ var ItemEditForm = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
-    this.setState(this.updateItem(nextProps));
+    this.setState(this.getStateDefaultValues(nextProps));
   },
 
   getInitialState: function() {
+    return this.getStateDefaultValues(this.props);
+  },
+
+  getStateDefaultValues: function(props) {
     // making a copy of item props because keeping this.props.item
     // was keeping a pointer to item, therefore modifying it when modifying
     // the state
-    return this.updateItem(this.props);
-  },
-
-  updateItem: function(props) {
     return {
       name: props.item.name,
       section: props.item.section,

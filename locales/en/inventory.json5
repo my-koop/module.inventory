@@ -37,7 +37,7 @@
         tooLong: "$t(section) must be at most __variable__ characters long"
       },
       price: {
-        error: "$t(price) must be a positive integer"
+        error: "$t(price) must be a number"
       },
       threshold: {
         error: "$t(threshold) must be a positive integer"
