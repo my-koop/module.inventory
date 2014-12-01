@@ -224,6 +224,10 @@ var Items = React.createClass({
           name: __("inventory::section"),
           cellGenerator: makeTextItemInput("section")
         },
+        description: {
+          name: __("inventory::description"),
+          cellGenerator: makeTextItemInput("description")
+        },
         name: {
           name: __("name"),
           cellGenerator: makeTextItemInput("name")
@@ -238,6 +242,7 @@ var Items = React.createClass({
         },
         actions: {
           name: __("actions"),
+          headerProps: {className: "list-mod-min-width-3"},
           isStatic: true,
           cellGenerator: function(item, i) {
             return (
