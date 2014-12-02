@@ -1,27 +1,35 @@
 var React = require("react/addons");
-var MKItems = require("./Items");
-var __ = require("language").__;
+var Router = require("react-router");
 var BSButton = require("react-bootstrap/Button");
-var reactRouter = require("react-router");
-var routeData = require("dynamic-metadata").routes;
+
+var MKItems = require("./Items");
+var MKIcon = require("mykoop-core/components/Icon");
+
+var getRouteName = require("mykoop-utils/frontend/getRouteName");
+var __ = require("language").__;
 
 var ItemsPage = React.createClass({
   goToNewItemPage: function() {
-    reactRouter.transitionTo(routeData.dashboard.children.inventory.children.createItem.name);
+    Router.transitionTo("createItemPage");
   },
 
   render: function() {
     return (
       <div>
-        <h1>
+        <h1 className="pull-left">
           {__("inventory::inventoryWelcome")}
         </h1>
-        <BSButton
-          onClick={this.goToNewItemPage}
-          bsStyle="success"
-        >
-          {__("inventory::newItem")}
-        </BSButton>
+        <div className="pull-right h1">
+          <BSButton
+            onClick={this.goToNewItemPage}
+            bsStyle="success"
+          >
+            <span>
+              <MKIcon glyph="plus" fixedWidth/>
+              {__("inventory::newItem")}
+            </span>
+          </BSButton>
+        </div>
         <MKItems />
       </div>
     );

@@ -2,47 +2,53 @@ var validate = require("mykoop-utils/common").validation;
 
 var updateDataConstraint = {
   id: {
-    presence: true,
     numericality: {
       onlyInteger: true,
-      greaterThan: 0
+      message: "^notAnInteger"
     }
   },
   code: {
-    presence: true,
     numericality: {
       onlyInteger: true,
-      greaterThan: 0
+      greaterThan: 0,
+      message: "^error"
     }
   },
   name: {
-    presence: true,
     length: {
       maximum: 45,
+      tooLong: "^tooLong__%{count}__"
     }
   },
+  section: {
+    length: {
+      maximum: 45,
+      tooLong: "^tooLong__%{count}__"
+    }
+  },
+  description: {},
   price: {
-    presence: true,
     numericality: {
-      greaterThanOrEqualTo: 0
+      greaterThanOrEqualTo: 0,
+      message: "^error"
     }
   },
   threshold: {
-    presence: true,
     numericality: {
       onlyInteger: true,
-      greaterThanOrEqualTo: 0
+      greaterThanOrEqualTo: 0,
+      message: "^error"
     }
   },
   quantity: {
-    presence: true,
     numericality: {
       onlyInteger: true,
-      greaterThanOrEqualTo: 0
+      greaterThanOrEqualTo: 0,
+      message: "^error"
     }
   }
 }
 
-export function updateItem(obj) {
+export function itemInformation(obj) {
   return validate(obj, updateDataConstraint);
 }

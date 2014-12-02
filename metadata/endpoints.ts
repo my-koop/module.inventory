@@ -8,18 +8,26 @@ var endpoints = {
       path: "/inventory/listbelowthreshold",
       method: "get"
     },
+    add: {
+      path: "/inventory/items",
+      method: "post",
+      validation: {
+        resolve: "validation",
+        value: "itemInformation"
+      }
+    },
     item: {
+      get: {
+        path: "/inventory/items/:id",
+        method: "get",
+      },
       update: {
         path: "/inventory/items/:id",
         method: "put",
         validation: {
           resolve: "validation",
-          value: "updateItem"
+          value: "itemInformation"
         }
-      },
-      add: {
-        path: "/inventory/items",
-        method: "post"
       },
       remove: {
         path: "/inventory/items/:id",

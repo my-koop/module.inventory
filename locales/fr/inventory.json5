@@ -7,13 +7,44 @@
   threshold: "Seuil minimal",
   removedItemMessage: "Vous avez effacé l'article",
   quantity: "Quantité",
-  id: "Id",
+  id: "ID",
+  section: "Section",
+  description: "Description",
   editItem: "Modifier l'article",
+  quickEditItem: "Modification rapide de l'article",
   saveItem: "Enregistrer item",
 
   inventoryWelcome: "Inventaire",
   createItemWelcome: "Page de création d'article",
+  editItemWelcome: "Modification de l'article",
   newItem: "ajouter article",
   item_new_failed: "Échec d'ajout de l'article",
   item_new_success: "Ajout de l'article réussi",
+
+  errors: {
+    app: {
+      id: {
+        notAnInteger: "Le ID doit être un entier",
+        notFound: "Le ID est introuvable"
+      },
+      code: {
+        error: "Le code doit être un entier positif"
+      },
+      name: {
+        tooLong: "Le nom doit contenir un maximum de __variable__ caractères"
+      },
+      section: {
+        tooLong: "La section doit contenir un maximum de __variable__ caractères"
+      },
+      price: {
+        error: "Le prix doit être un nombre"
+      },
+      threshold: {
+        error: "Le seuil minimum doit être un entier positif"
+      },
+      quantity: {
+        error: "La quantité doit être un entier positif"
+      }
+    }
+  }
 }
