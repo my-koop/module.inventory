@@ -3,10 +3,10 @@
   "role": "inventory",
   "mykoop": {
     "dependencies": {
-      "database": true
+      "database": "1.0.0"
     }
   },
-  "version": "1.0.0-rc",
+  "version": "1.0.0",
   "description": "Inventory module for My Koop responsible for item's definitions and management",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,6 @@
     "jsonschema": "^1.0.0",
     "lodash": "^2.4.1",
     "mykoop-logger": "git://github.com/my-koop/module.logger",
-    "mykoop-utils": "git://github.com/my-koop/module.utils#rc"
+    "mykoop-utils": "git://github.com/my-koop/module.utils#final"
   }
 }
