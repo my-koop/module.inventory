@@ -41,10 +41,6 @@ var Items = React.createClass({
   },
 
   removeItem: function(item, i) {
-    if(!this.state.canDelete) {
-      // shouldn't be here
-      return;
-    }
     var self = this;
     var id = item.id;
     actions.inventory.item.remove(
@@ -70,10 +66,6 @@ var Items = React.createClass({
   },
 
   saveItem: function(item, i) {
-    if(!this.state.canUpdate) {
-      // shouldn't be here
-      return;
-    }
     var self = this;
     actions.inventory.item.update({
       i18nErrors: {
