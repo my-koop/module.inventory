@@ -4,18 +4,25 @@ var Router = require("react-router");
 var BSCol   = require("react-bootstrap/Col");
 var BSInput = require("react-bootstrap/Input");
 
-var MKIcon           = require("mykoop-core/components/Icon");
-var MKTableSorter    = require("mykoop-core/components/TableSorter");
-var MKListModButtons = require("mykoop-core/components/ListModButtons");
-var MKAlertTrigger   = require("mykoop-core/components/AlertTrigger");
+var MKIcon            = require("mykoop-core/components/Icon");
+var MKTableSorter     = require("mykoop-core/components/TableSorter");
+var MKListModButtons  = require("mykoop-core/components/ListModButtons");
+var MKAlertTrigger    = require("mykoop-core/components/AlertTrigger");
+var MKPermissionMixin = require("mykoop-user/components/PermissionMixin")
 
 var __      = require("language").__;
 var actions = require("actions");
 
 var Items = React.createClass({
+  mixins: [MKPermissionMixin],
+
   getInitialState: function() {
+    var validator = this.constructor.validateUserPermissions;
     return {
-      items: []
+      items: [],
+      canCreate: validator({inventory: {create: true}}),
+      canUpdate: validator({inventory: {update: true}}),
+      canDelete: validator({inventory: {delete: true}}),
     }
   },
 
@@ -39,13 +46,12 @@ var Items = React.createClass({
     actions.inventory.item.remove(
     {
       i18nErrors: {},
+      alertErrors: true,
       data: {
         id : id
       }
-    }, function(err, res){
+    }, function(err, res) {
       if (err) {
-        var i18n = err.i18n[0];
-        MKAlertTrigger.showAlert(__(i18n.key, i18n));
         return;
       }
       var items = self.state.items;
@@ -83,86 +89,81 @@ var Items = React.createClass({
 
   actionsGenerator: function(item, i) {
     var self = this;
-
-    if(!item.editing) {
-      return [
-        // Edit Item
-        {
-          icon: "edit",
-          tooltip: {
-            text: __("inventory::quickEditItem"),
-            overlayProps: {
-              placement: "top"
-            }
-          },
-          callback: function() {
-            var backupItem = _.cloneDeep(item);
-            item.editing = true;
-            item.backup = backupItem;
-            self.state.items[i] = item;
-            self.setState({
-              items: self.state.items
-            });
-          }
-        },
-        // Item Details
-        {
-          icon: "search-plus",
-          tooltip: {
-            text: __("inventory::editItem"),
-            overlayProps: {
-              placement: "top"
-            }
-          },
-          callback: function() {
-            Router.transitionTo("editItemPage", {id: item.id});
-          }
-        },
-        // Remove Item
-        {
-          icon: "trash",
-          warningMessage: __("areYouSure"),
-          tooltip: {
-            text: __("remove"),
-            overlayProps: {
-              placement: "top"
-            }
-          },
-          callback: _.bind(self.removeItem, self, item, i)
+    var quickEditButton = !item.editing && this.state.canUpdate && {
+      icon: "edit",
+      tooltip: {
+        text: __("inventory::quickEditItem"),
+        overlayProps: {
+          placement: "top"
         }
-      ];
-    } else {
-      return [
-        // Save Item
-        {
-          icon: "save",
-          tooltip: {
-            text: __("inventory::saveItem"),
-            overlayProps: {
-              placement: "top"
-            }
-          },
-          callback: _.bind(self.saveItem, self, item, i)
-        },
-        // Cancel modifications
-        {
-          icon: "close",
-          tooltip: {
-            text: __("cancel"),
-            overlayProps: {
-              placement: "top"
-            }
-          },
-          callback: function() {
-            item = item.backup;
-            self.state.items[i] = item;
-            self.setState({
-              items: self.state.items
-            });
-          }
+      },
+      callback: function() {
+        var backupItem = _.cloneDeep(item);
+        item.editing = true;
+        item.backup = backupItem;
+        self.state.items[i] = item;
+        self.setState({
+          items: self.state.items
+        });
+      }
+    };
+    var detailsButton = !item.editing && this.state.canUpdate && {
+      icon: "search-plus",
+      tooltip: {
+        text: __("inventory::editItem"),
+        overlayProps: {
+          placement: "top"
         }
-      ];
-    }
+      },
+      callback: function() {
+        Router.transitionTo("editItemPage", {id: item.id});
+      }
+    };
+    var deleteButton = !item.editing && this.state.canDelete && {
+      icon: "trash",
+      warningMessage: __("areYouSure"),
+      tooltip: {
+        text: __("remove"),
+        overlayProps: {
+          placement: "top"
+        }
+      },
+      callback: _.bind(self.removeItem, self, item, i)
+    };
+    var saveButton = item.editing && {
+      icon: "save",
+      tooltip: {
+        text: __("inventory::saveItem"),
+        overlayProps: {
+          placement: "top"
+        }
+      },
+      callback: _.bind(self.saveItem, self, item, i)
+    };
+    var cancelButton = item.editing && {
+      icon: "close",
+      tooltip: {
+        text: __("cancel"),
+        overlayProps: {
+          placement: "top"
+        }
+      },
+      callback: function() {
+        item = item.backup;
+        self.state.items[i] = item;
+        self.setState({
+          items: self.state.items
+        });
+      }
+    };
+    var buttons = [
+      quickEditButton,
+      saveButton,
+      detailsButton,
+      cancelButton,
+      deleteButton,
+    ];
+    return _.compact(buttons);
   },
 
   render: function() {
@@ -201,17 +202,26 @@ var Items = React.createClass({
       });
     }
 
+    var columns = [
+      "id",
+      "code",
+      "section",
+      "name",
+      "quantity",
+      "threshold",
+      "actions"
+    ];
+    if(
+      !this.state.canUpdate &&
+      !this.state.canDelete
+    ) {
+      // No actions possible, don't show the column
+      columns.pop();
+    }
+
     // TableSorter Config
     var CONFIG = {
-      defaultOrdering: [
-        "id",
-        "code",
-        "section",
-        "name",
-        "quantity",
-        "threshold",
-        "actions"
-      ],
+      defaultOrdering: columns,
       columns: {
         id: {
           name: __("id"),

@@ -21,19 +21,40 @@ export function attachControllers(
   var inventory = binder.moduleInstance;
   // List items
   binder.attach(
-    {endPoint: endpoints.inventory.list},
+    {
+      endPoint: endpoints.inventory.list,
+      permissions: {
+        inventory: {
+          read: true
+        }
+      }
+    },
     binder.makeSimpleController(inventory.getItems)
   );
 
   // List items below threshold
   binder.attach(
-    {endPoint: endpoints.inventory.listbelowthreshold},
+    {
+      endPoint: endpoints.inventory.listbelowthreshold,
+      permissions: {
+        inventory: {
+          read: true
+        }
+      }
+    },
     binder.makeSimpleController(inventory.getItemsBelowThreshold)
   );
 
   // Get Item informations
   binder.attach(
-    {endPoint: endpoints.inventory.item.get},
+    {
+      endPoint: endpoints.inventory.item.get,
+      permissions: {
+        inventory: {
+          read: true
+        }
+      }
+    },
     binder.makeSimpleController<mkinventory.GetItemInformations.Params>(
       inventory.getItemInformations, function(req) {
       return {
@@ -46,7 +67,12 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endpoints.inventory.item.update,
-      validation: validation.itemInformation
+      validation: validation.itemInformation,
+      permissions: {
+        inventory: {
+          update: true
+        }
+      }
     },
     binder.makeSimpleController<mkinventory.UpdateItem.Params>(
       inventory.updateItem,
@@ -60,7 +86,14 @@ export function attachControllers(
 
   // Remove Item
   binder.attach(
-    {endPoint: endpoints.inventory.item.remove},
+    {
+      endPoint: endpoints.inventory.item.remove,
+      permissions: {
+        inventory: {
+          delete: true
+        }
+      }
+    },
     binder.makeSimpleController<mkinventory.DeleteItem.Params>(
       binder.moduleInstance.deleteItem,
       function(req: Express.Request) {
@@ -75,7 +108,12 @@ export function attachControllers(
   binder.attach(
     {
       endPoint: endpoints.inventory.add,
-      validation: validation.itemInformation
+      validation: validation.itemInformation,
+      permissions: {
+        inventory: {
+          create: true
+        }
+      }
     },
     binder.makeSimpleController<mkinventory.AddItem.Params>(
       inventory.addItem,

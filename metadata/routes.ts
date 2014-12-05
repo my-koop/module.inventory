@@ -10,6 +10,11 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     component: "CreateItemPage",
     name: "createItemPage",
     path: "create",
+    permissions: {
+      inventory: {
+        create: true
+      }
+    }
   });
 
   metaDataBuilder.addFrontendRoute({
@@ -19,6 +24,11 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     path: "item/:id",
     params: {
       id: [1]
+    },
+    permissions: {
+      inventory: {
+        update: true
+      }
     }
   });
 
@@ -26,13 +36,23 @@ export function addRoutes(metaDataBuilder: utils.MetaDataBuilder) {
     idPath: ["dashboard", "inventory", "items"],
     component: "ItemsPage",
     name: "items",
-    path: "items"
+    path: "items",
+    permissions: {
+      inventory: {
+        read: true
+      }
+    }
   });
 
   metaDataBuilder.addFrontendRoute({
     idPath: ["dashboard", "inventory", "itemsbelowthreshold"],
     component: "ItemsBelowThresholdPage",
     name: "itemsbelowthreshold",
-    path: "itemsbelowthreshold"
+    path: "itemsbelowthreshold",
+    permissions: {
+      inventory: {
+        read: true
+      }
+    }
   });
 }
