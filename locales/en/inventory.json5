@@ -1,5 +1,6 @@
 {
   item_update_failed : "Failed to update item description",
+  itemBelowThresholdTitle: "List of items below threshold",
   editing: "Editing",
   itemname: "Item name",
   code: "Code",

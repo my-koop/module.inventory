@@ -1,5 +1,6 @@
 {
   item_update_failed : "Échec de la mise à jour de l'article",
+  itemBelowThresholdTitle: "Liste des articles sous le seuil minimal",
   editing: "Édition de",
   itemname: "Nom de l'article",
   code: "Code",
