@@ -8,6 +8,11 @@ function addRoutes(metaDataBuilder) {
         component: "CreateItemPage",
         name: "createItemPage",
         path: "create",
+        permissions: {
+            inventory: {
+                create: true
+            }
+        }
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "inventory", "editItem"],
@@ -16,19 +21,34 @@ function addRoutes(metaDataBuilder) {
         path: "item/:id",
         params: {
             id: [1]
+        },
+        permissions: {
+            inventory: {
+                update: true
+            }
         }
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "inventory", "items"],
         component: "ItemsPage",
         name: "items",
-        path: "items"
+        path: "items",
+        permissions: {
+            inventory: {
+                read: true
+            }
+        }
     });
     metaDataBuilder.addFrontendRoute({
         idPath: ["dashboard", "inventory", "itemsbelowthreshold"],
         component: "ItemsBelowThresholdPage",
         name: "itemsbelowthreshold",
-        path: "itemsbelowthreshold"
+        path: "itemsbelowthreshold",
+        permissions: {
+            inventory: {
+                read: true
+            }
+        }
     });
 }
 exports.addRoutes = addRoutes;

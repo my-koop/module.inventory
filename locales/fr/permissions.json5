@@ -1,0 +1,9 @@
+{
+  inventory: {
+    __description: "Inventaire",
+    create: "Création de nouveaux articles",
+    read  : "Accéder aux articles",
+    update: "Modifier les articles",
+    delete: "Supprimer les articles"
+  }
+}
