@@ -27,17 +27,17 @@ var ItemsPage = React.createClass({
           {__("inventory::inventoryWelcome")}
         </h1>
         {canCreate ?
-        <span className="pull-right h1">
-          <BSButton
-            onClick={this.goToNewItemPage}
-            bsStyle="success"
-          >
-            <span>
-              <MKIcon glyph="plus" fixedWidth/>
-              {__("inventory::newItem")}
-            </span>
-          </BSButton>
-        </span>
+          <span className="pull-right h1">
+            <BSButton
+              onClick={this.goToNewItemPage}
+              bsStyle="success"
+            >
+              <span>
+                <MKIcon glyph="plus" fixedWidth/>
+                {__("inventory::newItem")}
+              </span>
+            </BSButton>
+          </span>
         : null}
         <MKItems />
       </div>

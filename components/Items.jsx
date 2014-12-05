@@ -130,7 +130,7 @@ var Items = React.createClass({
       },
       callback: _.bind(self.removeItem, self, item, i)
     };
-    var saveButton = item.editing && this.state.canUpdate && {
+    var saveButton = item.editing && {
       icon: "save",
       tooltip: {
         text: __("inventory::saveItem"),
@@ -140,7 +140,7 @@ var Items = React.createClass({
       },
       callback: _.bind(self.saveItem, self, item, i)
     };
-    var cancelButton = item.editing && this.state.canUpdate && {
+    var cancelButton = item.editing && {
       icon: "close",
       tooltip: {
         text: __("cancel"),
