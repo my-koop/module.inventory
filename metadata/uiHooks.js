@@ -24,7 +24,7 @@ var uiHooks = {
                             text: "inventory::navbar.quickActions.createItem",
                             link: "createItem"
                         },
-                        priority: 100,
+                        priority: 150,
                         permissions: {
                             inventory: {
                                 create: true
