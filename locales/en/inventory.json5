@@ -58,7 +58,6 @@
     }
   },
   sidebar: {
-    invoices: "$t(inventory::items)",
     createItem: "$t(inventory::navbar.quickActions.createItem)",
     listItems: "List items",
   },

@@ -18,7 +18,7 @@
   saveItem: "Enregistrer item",
 
   inventoryWelcome: "Inventaire",
-  createItemWelcome: "Page de création d'article",
+  createItemWelcome: "Création d'article",
   editItemWelcome: "Modification de l'article",
   newItem: "Ajouter un nouvel article",
   item_new_failed: "Échec d'ajout de l'article",
@@ -58,7 +58,6 @@
     }
   },
   sidebar: {
-    invoices: "$t(inventory::items)",
     createItem: "$t(inventory::navbar.quickActions.createItem)",
     listItems: "Lister les articles",
   },
