@@ -13,7 +13,11 @@ var ItemsPage = React.createClass({
   mixins: [MKPermissionMixin],
 
   goToNewItemPage: function() {
-    Router.transitionTo("createItemPage");
+    Router.transitionTo("createItem");
+  },
+
+  goToItemsTresholdPage: function() {
+    Router.transitionTo("itemsBelowThreshold");
   },
 
   render: function() {
@@ -26,19 +30,30 @@ var ItemsPage = React.createClass({
         <h1 className="pull-left">
           {__("inventory::inventoryWelcome")}
         </h1>
-        {canCreate ?
-          <span className="pull-right h1">
+        <span className="pull-right h1">
+          <BSButton
+            onClick={this.goToItemsTresholdPage}
+            bsStyle="warning"
+          >
+            <span>
+              <MKIcon glyph="list" />
+              {" " + __("inventory::itemsBelowThresholdButton")}
+            </span>
+          </BSButton>
+          {canCreate ? [
+            " ",
             <BSButton
+              key="newitem"
               onClick={this.goToNewItemPage}
               bsStyle="success"
             >
               <span>
-                <MKIcon glyph="plus" fixedWidth/>
-                {__("inventory::newItem")}
+                <MKIcon glyph="plus" />
+                {" " + __("inventory::newItem")}
               </span>
             </BSButton>
-          </span>
-        : null}
+          ] : null}
+        </span>
         <MKItems />
       </div>
     );
