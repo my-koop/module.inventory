@@ -11,6 +11,7 @@ var MKAlertTrigger    = require("mykoop-core/components/AlertTrigger");
 var MKPermissionMixin = require("mykoop-user/components/PermissionMixin")
 
 var __      = require("language").__;
+var formatMoney = require("language").formatMoney;
 var actions = require("actions");
 
 var Items = React.createClass({
@@ -67,6 +68,7 @@ var Items = React.createClass({
 
   saveItem: function(item, i) {
     var self = this;
+    item.price = parseFloat(item.price);
     actions.inventory.item.update({
       i18nErrors: {
         prefix: "inventory::errors",
@@ -169,7 +171,7 @@ var Items = React.createClass({
   render: function() {
     var self = this;
 
-    function makeEditableField(field, type, parseFunc) {
+    function makeEditableField(field, type, parseFunc, renderFunc) {
       return function(item, i) {
         if(item.editing) {
           var valueLink = {
@@ -183,7 +185,7 @@ var Items = React.createClass({
           }
           return <BSInput type={type} valueLink={valueLink} />
         }
-        return item[field];
+        return renderFunc ? renderFunc(item) : item[field];
       }
     }
     function makeTextItemInput(field) {
@@ -207,6 +209,7 @@ var Items = React.createClass({
       "code",
       "section",
       "name",
+      "price",
       "quantity",
       "threshold",
       "actions"
@@ -237,6 +240,12 @@ var Items = React.createClass({
         description: {
           name: __("inventory::description"),
           cellGenerator: makeTextItemInput("description")
+        },
+        price: {
+          name: __("price"),
+          cellGenerator: makeEditableField("price", "number", _.identity, function(item) {
+            return formatMoney(item.price);
+          })
         },
         name: {
           name: __("name"),
