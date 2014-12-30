@@ -1,5 +1,8 @@
 {
+  items: "Inventory",
   item_update_failed : "Failed to update item description",
+  itemsBelowThresholdButton: "Items below threshold",
+  itemBelowThresholdTitle: "List of items below threshold",
   editing: "Editing",
   itemname: "Item name",
   code: "Code",
@@ -17,7 +20,7 @@
   inventoryWelcome: "Inventory",
   createItemWelcome: "Item creation page",
   editItemWelcome: "Editing item",
-  newItem: "add item",
+  newItem: "Add a new item",
   item_new_failed: "Failed to create new item",
   item_new_success: "Succesfully added new item",
 
@@ -46,5 +49,16 @@
         error: "$t(quantity) must be a positive integer"
       }
     }
-  }
+  },
+
+  navbar: {
+    items: "$t(inventory::items)",
+    quickActions: {
+      createItem: "Add a new item"
+    }
+  },
+  sidebar: {
+    createItem: "$t(inventory::navbar.quickActions.createItem)",
+    listItems: "List items",
+  },
 }

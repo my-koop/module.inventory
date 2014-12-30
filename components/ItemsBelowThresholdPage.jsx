@@ -1,6 +1,7 @@
 var React             = require("react");
-var BSCol             = require("react-bootstrap/Col");
+
 var MKTableSorter     = require("mykoop-core/components/TableSorter");
+
 var __                = require("language").__;
 var actions           = require("actions");
 
@@ -14,7 +15,10 @@ var Items = React.createClass({
   componentWillMount: function() {
     var self = this;
 
-    actions.inventory.listbelowthreshold(function (err, res) {
+    actions.inventory.listbelowthreshold({
+      i18nErrors: {},
+      alertErrors: true
+    }, function (err, res) {
       if (err) {
         console.error(err);
         return;
@@ -32,36 +36,37 @@ var Items = React.createClass({
     var CONFIG = {
       columns: {
         id: {
-          name: __("inventory::id"),
+          name: __("id"),
         },
         name: {
-          name: __("inventory::name"),
+          name: __("name"),
         },
         quantity: {
-          name: __("inventory::quantity"),
+          name: __("quantity"),
         },
         threshold: {
           name: __("inventory::threshold"),
         },
         code: {
-          name: __("inventory::code"),
+          name: __("code"),
         }
       }
     };
 
     return (
-      <BSCol md={12}>
-        <div>
-          <MKTableSorter
-            config={CONFIG}
-            items={this.state.items}
-            striped
-            bordered
-            condensed
-            hover
-          />
-        </div>
-      </BSCol>
+      <div>
+        <h1>
+          {__("inventory::itemBelowThresholdTitle")}
+        </h1>
+        <MKTableSorter
+          config={CONFIG}
+          items={this.state.items}
+          striped
+          bordered
+          condensed
+          hover
+        />
+      </div>
     );
   }
 });

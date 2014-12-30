@@ -65,9 +65,10 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     callback: mkinventory.GetItems.Callback
   ) {
     var whereCondition = params.selectCondition ?
-      "WHERE " + params.selectCondition : "";
+      "AND " + params.selectCondition : "";
     connection.query(
-      "SELECT ?? FROM item " + whereCondition,
+      "SELECT ?? FROM item WHERE deleted IS NULL " +
+      whereCondition,
       [Item.COLUMNS_DB],
       function(err, rows) {
         callback(err && new DatabaseError(err), {
@@ -137,7 +138,7 @@ class InventoryModule extends utils.BaseModule implements mkinventory.Module {
     callback: mkinventory.DeleteItem.Callback
   ) {
     connection.query(
-      "DELETE from item WHERE id = ?",
+      "UPDATE item SET deleted=1 WHERE id = ?",
       [params.id],
       function(err) {
         callback(err && new DatabaseError(err));

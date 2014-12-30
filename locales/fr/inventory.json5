@@ -1,5 +1,8 @@
 {
+  items: "Inventaire",
   item_update_failed : "Échec de la mise à jour de l'article",
+  itemsBelowThresholdButton: "Articles sous le seuil minimal",
+  itemBelowThresholdTitle: "Liste des articles sous le seuil minimal",
   editing: "Édition de",
   itemname: "Nom de l'article",
   code: "Code",
@@ -15,9 +18,9 @@
   saveItem: "Enregistrer item",
 
   inventoryWelcome: "Inventaire",
-  createItemWelcome: "Page de création d'article",
+  createItemWelcome: "Création d'article",
   editItemWelcome: "Modification de l'article",
-  newItem: "ajouter article",
+  newItem: "Ajouter un nouvel article",
   item_new_failed: "Échec d'ajout de l'article",
   item_new_success: "Ajout de l'article réussi",
 
@@ -46,5 +49,16 @@
         error: "La quantité doit être un entier positif"
       }
     }
-  }
+  },
+
+  navbar: {
+    items: "$t(inventory::items)",
+    quickActions: {
+      createItem: "Nouvel article"
+    }
+  },
+  sidebar: {
+    createItem: "$t(inventory::navbar.quickActions.createItem)",
+    listItems: "Lister les articles",
+  },
 }
